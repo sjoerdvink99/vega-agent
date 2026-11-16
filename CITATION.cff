@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: If you use this software in your research, please cite it.
+type: software
+title: vega-agent
+abstract: A visualization grammar for agent traces. A formal language describes agent processes, covering tool calls, delegation to agents, parallelism, loops, failures and representations; a declarative view grammar renders traces and corpora as diagrams, timelines and swimlanes, icicles, variants, process graphs, Sankeys, transition matrices, activity statistics and sequences, and reads the telemetry standards agents already emit.
+authors:
+  - family-names: Vink
+    given-names: Sjoerd
+version: 0.1.0
+license: MIT
+repository-code: https://github.com/sjoerdvink99/vega-agent
+keywords:
+  - agents
+  - large language models
+  - visualization
+  - grammar
+  - process mining
+  - opentelemetry

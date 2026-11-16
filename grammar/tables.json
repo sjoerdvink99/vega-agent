@@ -1,0 +1,142 @@
+[
+  {
+    "name": "levels, loops and groups",
+    "runs": [
+      {"id": "a", "group": "before", "process": "model -> tool.read -> model -> tool.read -> model", "time": []},
+      {"id": "b", "group": "after", "process": "model -> tool.edit! -> model", "time": []},
+      {"id": "c", "group": "before", "process": "model -> tool.read -> model -> tool.read -> model -> tool.read -> model", "time": []}
+    ],
+    "tables": {
+      "runs": [
+        {"run": 0, "id": "a", "group": "before", "full": 0, "names": 3, "actors": 6, "loops": 9},
+        {"run": 1, "id": "b", "group": "after", "full": 1, "names": 4, "actors": 7, "loops": 10},
+        {"run": 2, "id": "c", "group": "before", "full": 2, "names": 5, "actors": 8, "loops": 9}
+      ],
+      "variants": [
+        {"variant": 0, "level": "full", "label": "(model -> tool.read){2} -> model", "length": 5},
+        {"variant": 1, "level": "full", "label": "model -> tool.edit! -> model", "length": 3},
+        {"variant": 2, "level": "full", "label": "(model -> tool.read){3} -> model", "length": 7},
+        {"variant": 3, "level": "names", "label": "(model -> tool.read){2} -> model", "length": 5},
+        {"variant": 4, "level": "names", "label": "model -> tool.edit! -> model", "length": 3},
+        {"variant": 5, "level": "names", "label": "(model -> tool.read){3} -> model", "length": 7},
+        {"variant": 6, "level": "actors", "label": "(model -> tool){2} -> model", "length": 5},
+        {"variant": 7, "level": "actors", "label": "model -> tool! -> model", "length": 3},
+        {"variant": 8, "level": "actors", "label": "(model -> tool){3} -> model", "length": 7},
+        {"variant": 9, "level": "loops", "label": "(model -> tool)+ -> model", "length": 2},
+        {"variant": 10, "level": "loops", "label": "model -> tool! -> model", "length": 3}
+      ],
+      "tokens": [
+        {"variant": 0, "index": 0, "token": "model", "actors": ["model"], "failed": false},
+        {"variant": 0, "index": 1, "token": "tool.read", "actors": ["tool"], "failed": false},
+        {"variant": 0, "index": 2, "token": "model", "actors": ["model"], "failed": false},
+        {"variant": 0, "index": 3, "token": "tool.read", "actors": ["tool"], "failed": false},
+        {"variant": 0, "index": 4, "token": "model", "actors": ["model"], "failed": false},
+        {"variant": 1, "index": 0, "token": "model", "actors": ["model"], "failed": false},
+        {"variant": 1, "index": 1, "token": "tool.edit!", "actors": ["tool"], "failed": true},
+        {"variant": 1, "index": 2, "token": "model", "actors": ["model"], "failed": false},
+        {"variant": 2, "index": 0, "token": "model", "actors": ["model"], "failed": false},
+        {"variant": 2, "index": 1, "token": "tool.read", "actors": ["tool"], "failed": false},
+        {"variant": 2, "index": 2, "token": "model", "actors": ["model"], "failed": false},
+        {"variant": 2, "index": 3, "token": "tool.read", "actors": ["tool"], "failed": false},
+        {"variant": 2, "index": 4, "token": "model", "actors": ["model"], "failed": false},
+        {"variant": 2, "index": 5, "token": "tool.read", "actors": ["tool"], "failed": false},
+        {"variant": 2, "index": 6, "token": "model", "actors": ["model"], "failed": false},
+        {"variant": 3, "index": 0, "token": "model", "actors": ["model"], "failed": false},
+        {"variant": 3, "index": 1, "token": "tool.read", "actors": ["tool"], "failed": false},
+        {"variant": 3, "index": 2, "token": "model", "actors": ["model"], "failed": false},
+        {"variant": 3, "index": 3, "token": "tool.read", "actors": ["tool"], "failed": false},
+        {"variant": 3, "index": 4, "token": "model", "actors": ["model"], "failed": false},
+        {"variant": 4, "index": 0, "token": "model", "actors": ["model"], "failed": false},
+        {"variant": 4, "index": 1, "token": "tool.edit!", "actors": ["tool"], "failed": true},
+        {"variant": 4, "index": 2, "token": "model", "actors": ["model"], "failed": false},
+        {"variant": 5, "index": 0, "token": "model", "actors": ["model"], "failed": false},
+        {"variant": 5, "index": 1, "token": "tool.read", "actors": ["tool"], "failed": false},
+        {"variant": 5, "index": 2, "token": "model", "actors": ["model"], "failed": false},
+        {"variant": 5, "index": 3, "token": "tool.read", "actors": ["tool"], "failed": false},
+        {"variant": 5, "index": 4, "token": "model", "actors": ["model"], "failed": false},
+        {"variant": 5, "index": 5, "token": "tool.read", "actors": ["tool"], "failed": false},
+        {"variant": 5, "index": 6, "token": "model", "actors": ["model"], "failed": false},
+        {"variant": 6, "index": 0, "token": "model", "actors": ["model"], "failed": false},
+        {"variant": 6, "index": 1, "token": "tool", "actors": ["tool"], "failed": false},
+        {"variant": 6, "index": 2, "token": "model", "actors": ["model"], "failed": false},
+        {"variant": 6, "index": 3, "token": "tool", "actors": ["tool"], "failed": false},
+        {"variant": 6, "index": 4, "token": "model", "actors": ["model"], "failed": false},
+        {"variant": 7, "index": 0, "token": "model", "actors": ["model"], "failed": false},
+        {"variant": 7, "index": 1, "token": "tool!", "actors": ["tool"], "failed": true},
+        {"variant": 7, "index": 2, "token": "model", "actors": ["model"], "failed": false},
+        {"variant": 8, "index": 0, "token": "model", "actors": ["model"], "failed": false},
+        {"variant": 8, "index": 1, "token": "tool", "actors": ["tool"], "failed": false},
+        {"variant": 8, "index": 2, "token": "model", "actors": ["model"], "failed": false},
+        {"variant": 8, "index": 3, "token": "tool", "actors": ["tool"], "failed": false},
+        {"variant": 8, "index": 4, "token": "model", "actors": ["model"], "failed": false},
+        {"variant": 8, "index": 5, "token": "tool", "actors": ["tool"], "failed": false},
+        {"variant": 8, "index": 6, "token": "model", "actors": ["model"], "failed": false},
+        {"variant": 9, "index": 0, "token": "(model -> tool)+", "actors": ["model", "tool"], "failed": false},
+        {"variant": 9, "index": 1, "token": "model", "actors": ["model"], "failed": false},
+        {"variant": 10, "index": 0, "token": "model", "actors": ["model"], "failed": false},
+        {"variant": 10, "index": 1, "token": "tool!", "actors": ["tool"], "failed": true},
+        {"variant": 10, "index": 2, "token": "model", "actors": ["model"], "failed": false}
+      ],
+      "steps": [
+        {"variant": 0, "index": 0, "depth": 0, "parent": -1, "actor": "model", "name": null, "signature": null, "failed": false},
+        {"variant": 0, "index": 1, "depth": 0, "parent": -1, "actor": "tool", "name": "read", "signature": null, "failed": false},
+        {"variant": 0, "index": 2, "depth": 0, "parent": -1, "actor": "model", "name": null, "signature": null, "failed": false},
+        {"variant": 0, "index": 3, "depth": 0, "parent": -1, "actor": "tool", "name": "read", "signature": null, "failed": false},
+        {"variant": 0, "index": 4, "depth": 0, "parent": -1, "actor": "model", "name": null, "signature": null, "failed": false},
+        {"variant": 1, "index": 0, "depth": 0, "parent": -1, "actor": "model", "name": null, "signature": null, "failed": false},
+        {"variant": 1, "index": 1, "depth": 0, "parent": -1, "actor": "tool", "name": "edit", "signature": null, "failed": true},
+        {"variant": 1, "index": 2, "depth": 0, "parent": -1, "actor": "model", "name": null, "signature": null, "failed": false},
+        {"variant": 2, "index": 0, "depth": 0, "parent": -1, "actor": "model", "name": null, "signature": null, "failed": false},
+        {"variant": 2, "index": 1, "depth": 0, "parent": -1, "actor": "tool", "name": "read", "signature": null, "failed": false},
+        {"variant": 2, "index": 2, "depth": 0, "parent": -1, "actor": "model", "name": null, "signature": null, "failed": false},
+        {"variant": 2, "index": 3, "depth": 0, "parent": -1, "actor": "tool", "name": "read", "signature": null, "failed": false},
+        {"variant": 2, "index": 4, "depth": 0, "parent": -1, "actor": "model", "name": null, "signature": null, "failed": false},
+        {"variant": 2, "index": 5, "depth": 0, "parent": -1, "actor": "tool", "name": "read", "signature": null, "failed": false},
+        {"variant": 2, "index": 6, "depth": 0, "parent": -1, "actor": "model", "name": null, "signature": null, "failed": false}
+      ],
+      "times": []
+    }
+  },
+  {
+    "name": "nesting, parallel branches, signatures and times",
+    "runs": [
+      {"id": "x", "process": "agent.worker{ model -> (tool.b || tool.a(q => r)) } -> model", "time": [[0, 4], [0, 1], null, [1, 2], [4, 5]]},
+      {"id": "y", "process": "agent.worker{ model -> (tool.a(q => r) || tool.b) } -> model", "time": []}
+    ],
+    "tables": {
+      "runs": [
+        {"run": 0, "id": "x", "group": null, "full": 0, "names": 1, "actors": 2, "loops": 3},
+        {"run": 1, "id": "y", "group": null, "full": 0, "names": 1, "actors": 2, "loops": 3}
+      ],
+      "variants": [
+        {"variant": 0, "level": "full", "label": "agent.worker{ model -> tool.a(q => r) || tool.b } -> model", "length": 2},
+        {"variant": 1, "level": "names", "label": "agent.worker{ model -> tool.a || tool.b } -> model", "length": 2},
+        {"variant": 2, "level": "actors", "label": "agent{ model -> tool[2] } -> model", "length": 2},
+        {"variant": 3, "level": "loops", "label": "agent{ model -> tool[] } -> model", "length": 2}
+      ],
+      "tokens": [
+        {"variant": 0, "index": 0, "token": "agent.worker{ model -> tool.a(q => r) || tool.b }", "actors": ["agent"], "failed": false},
+        {"variant": 0, "index": 1, "token": "model", "actors": ["model"], "failed": false},
+        {"variant": 1, "index": 0, "token": "agent.worker{ model -> tool.a || tool.b }", "actors": ["agent"], "failed": false},
+        {"variant": 1, "index": 1, "token": "model", "actors": ["model"], "failed": false},
+        {"variant": 2, "index": 0, "token": "agent{ model -> tool[2] }", "actors": ["agent"], "failed": false},
+        {"variant": 2, "index": 1, "token": "model", "actors": ["model"], "failed": false},
+        {"variant": 3, "index": 0, "token": "agent{ model -> tool[] }", "actors": ["agent"], "failed": false},
+        {"variant": 3, "index": 1, "token": "model", "actors": ["model"], "failed": false}
+      ],
+      "steps": [
+        {"variant": 0, "index": 0, "depth": 0, "parent": -1, "actor": "agent", "name": "worker", "signature": null, "failed": false},
+        {"variant": 0, "index": 1, "depth": 1, "parent": 0, "actor": "model", "name": null, "signature": null, "failed": false},
+        {"variant": 0, "index": 2, "depth": 1, "parent": 0, "actor": "tool", "name": "a", "signature": "(q => r)", "failed": false},
+        {"variant": 0, "index": 3, "depth": 1, "parent": 0, "actor": "tool", "name": "b", "signature": null, "failed": false},
+        {"variant": 0, "index": 4, "depth": 0, "parent": -1, "actor": "model", "name": null, "signature": null, "failed": false}
+      ],
+      "times": [
+        {"run": 0, "index": 0, "start": 0, "end": 4},
+        {"run": 0, "index": 1, "start": 0, "end": 1},
+        {"run": 0, "index": 3, "start": 1, "end": 2},
+        {"run": 0, "index": 4, "start": 4, "end": 5}
+      ]
+    }
+  }
+]

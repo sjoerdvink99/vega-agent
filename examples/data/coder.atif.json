@@ -1,0 +1,204 @@
+{
+  "schema_version": "ATIF-v1.8",
+  "trajectory_id": "fix-totals",
+  "agent": {
+    "name": "coder",
+    "version": "1.0",
+    "model_name": "model-b"
+  },
+  "steps": [
+    {
+      "step_id": 1,
+      "source": "system",
+      "message": "You are a coding agent."
+    },
+    {
+      "step_id": 2,
+      "source": "user",
+      "message": "The monthly totals are off by one."
+    },
+    {
+      "step_id": 3,
+      "source": "agent",
+      "message": "",
+      "tool_calls": [
+        {
+          "tool_call_id": "c1",
+          "function_name": "explore",
+          "arguments": {}
+        }
+      ],
+      "observation": {
+        "results": [
+          {
+            "source_call_id": "c1",
+            "subagent_trajectory_ref": [
+              {
+                "trajectory_id": "explore-1"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "step_id": 4,
+      "source": "agent",
+      "message": "",
+      "tool_calls": [
+        {
+          "tool_call_id": "c2",
+          "function_name": "edit_file",
+          "arguments": {}
+        }
+      ],
+      "observation": {
+        "results": [
+          {
+            "source_call_id": "c2",
+            "content": "patched"
+          }
+        ]
+      }
+    },
+    {
+      "step_id": 5,
+      "source": "agent",
+      "message": "",
+      "tool_calls": [
+        {
+          "tool_call_id": "c3",
+          "function_name": "run_tests",
+          "arguments": {}
+        }
+      ],
+      "observation": {
+        "results": [
+          {
+            "source_call_id": "c3",
+            "content": "1 failed",
+            "extra": {
+              "is_error": true
+            }
+          }
+        ]
+      }
+    },
+    {
+      "step_id": 6,
+      "source": "agent",
+      "message": "",
+      "tool_calls": [
+        {
+          "tool_call_id": "c4",
+          "function_name": "edit_file",
+          "arguments": {}
+        }
+      ],
+      "observation": {
+        "results": [
+          {
+            "source_call_id": "c4",
+            "content": "patched"
+          }
+        ]
+      }
+    },
+    {
+      "step_id": 7,
+      "source": "agent",
+      "message": "",
+      "tool_calls": [
+        {
+          "tool_call_id": "c5",
+          "function_name": "run_tests",
+          "arguments": {}
+        }
+      ],
+      "observation": {
+        "results": [
+          {
+            "source_call_id": "c5",
+            "content": "all passed"
+          }
+        ]
+      }
+    },
+    {
+      "step_id": 8,
+      "source": "agent",
+      "message": "Fixed the off-by-one in the month boundary."
+    }
+  ],
+  "subagent_trajectories": [
+    {
+      "schema_version": "ATIF-v1.8",
+      "trajectory_id": "explore-1",
+      "agent": {
+        "name": "explorer",
+        "version": "1.0"
+      },
+      "steps": [
+        {
+          "step_id": 1,
+          "source": "user",
+          "message": "Find where totals are computed."
+        },
+        {
+          "step_id": 2,
+          "source": "agent",
+          "message": "",
+          "tool_calls": [
+            {
+              "tool_call_id": "e1",
+              "function_name": "grep",
+              "arguments": {}
+            },
+            {
+              "tool_call_id": "e2",
+              "function_name": "grep",
+              "arguments": {}
+            }
+          ],
+          "observation": {
+            "results": [
+              {
+                "source_call_id": "e1",
+                "content": "..."
+              },
+              {
+                "source_call_id": "e2",
+                "content": "..."
+              }
+            ]
+          }
+        },
+        {
+          "step_id": 3,
+          "source": "agent",
+          "message": "",
+          "tool_calls": [
+            {
+              "tool_call_id": "e3",
+              "function_name": "read_file",
+              "arguments": {}
+            }
+          ],
+          "observation": {
+            "results": [
+              {
+                "source_call_id": "e3",
+                "content": "..."
+              }
+            ]
+          }
+        },
+        {
+          "step_id": 4,
+          "source": "agent",
+          "message": "Totals live in report.py."
+        }
+      ]
+    }
+  ]
+}

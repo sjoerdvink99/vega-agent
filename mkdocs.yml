@@ -1,0 +1,79 @@
+site_name: vega-agent
+site_description: A grammar for agent processes, and the visualizations it produces.
+site_url: https://sjoerdvink99.github.io/vega-agent/
+repo_url: https://github.com/sjoerdvink99/vega-agent
+repo_name: vega-agent
+edit_uri: edit/main/docs/
+
+nav:
+  - Home: index.md
+  - Quickstart: quickstart.md
+  - Guide:
+      - Grammar: grammar.md
+      - Tables: tables.md
+      - Data: data.md
+      - Views: views.md
+      - Interaction: interaction.md
+      - Compiling to Vega: vega.md
+      - Standards: standards.md
+  - Gallery: gallery.md
+  - Examples: examples/index.md
+  - Reference:
+      - TypeScript: reference/javascript.md
+      - Python: reference/python.md
+      - Stability: stability.md
+  - Contributing: contributing.md
+
+theme:
+  name: material
+  logo: assets/logo.svg
+  favicon: assets/logo.svg
+  font:
+    text: Inter
+    code: JetBrains Mono
+  features:
+    - content.code.copy
+    - navigation.sections
+    - navigation.footer
+    - navigation.tabs
+    - navigation.top
+    - search.highlight
+  palette:
+    - scheme: default
+      primary: white
+      accent: deep purple
+      toggle:
+        icon: material/weather-night
+        name: Dark mode
+    - scheme: slate
+      primary: black
+      accent: deep purple
+      toggle:
+        icon: material/weather-sunny
+        name: Light mode
+
+plugins:
+  - search
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.superfences:
+      custom_fences:
+        - name: vega-agent
+          class: vega-agent-spec
+          format: !!python/name:pymdownx.superfences.fence_div_format
+  - pymdownx.tabbed:
+      alternate_style: true
+
+extra_javascript:
+  - javascripts/views.js
+
+extra_css:
+  - stylesheets/site.css

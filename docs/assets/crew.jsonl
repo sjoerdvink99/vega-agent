@@ -1,0 +1,26 @@
+{"trace":"t1","id":"1","kind":"llm","name":"plan","start":0.0,"end":1.0}
+{"trace":"t1","id":"2","kind":"agent","name":"research","start":1.1,"end":3.4}
+{"trace":"t1","id":"3","parent":"2","kind":"llm","start":1.2,"end":1.8}
+{"trace":"t1","id":"4","parent":"2","kind":"tool","name":"search","start":1.9,"end":2.6}
+{"trace":"t1","id":"5","parent":"2","kind":"llm","start":2.7,"end":3.4}
+{"trace":"t1","id":"6","kind":"agent","name":"code","start":1.1,"end":4.9}
+{"trace":"t1","id":"7","parent":"6","kind":"llm","start":1.2,"end":1.9}
+{"trace":"t1","id":"8","parent":"6","kind":"tool","name":"edit","start":2.0,"end":2.6}
+{"trace":"t1","id":"9","parent":"6","kind":"code","name":"test","start":2.7,"end":3.4,"error":"2 tests failed"}
+{"trace":"t1","id":"10","parent":"6","kind":"llm","start":3.5,"end":4.9}
+{"trace":"t1","id":"11","kind":"llm","name":"report","start":5.0,"end":6.0}
+{"trace":"t2","id":"1","kind":"human","name":"user","start":0.0,"end":0.4}
+{"trace":"t2","id":"2","kind":"agent","name":"orchestrator","start":0.5,"end":8.6}
+{"trace":"t2","id":"3","parent":"2","kind":"llm","start":0.6,"end":1.4}
+{"trace":"t2","id":"4","parent":"2","kind":"agent","name":"researcher","start":1.5,"end":3.9}
+{"trace":"t2","id":"5","parent":"4","kind":"llm","start":1.6,"end":2.2}
+{"trace":"t2","id":"6","parent":"4","kind":"tool","name":"search","start":2.3,"end":3.1}
+{"trace":"t2","id":"7","parent":"4","kind":"llm","start":3.2,"end":3.9}
+{"trace":"t2","id":"8","parent":"2","kind":"agent","name":"writer","start":4.0,"end":7.8}
+{"trace":"t2","id":"9","parent":"8","kind":"llm","start":4.1,"end":4.9}
+{"trace":"t2","id":"10","parent":"8","kind":"tool","name":"draft","start":5.0,"end":5.3,"error":"over length"}
+{"trace":"t2","id":"11","parent":"8","kind":"llm","start":5.4,"end":6.2}
+{"trace":"t2","id":"12","parent":"8","kind":"tool","name":"draft","start":6.3,"end":6.9}
+{"trace":"t2","id":"13","parent":"8","kind":"llm","start":7.0,"end":7.8}
+{"trace":"t2","id":"14","parent":"2","kind":"llm","start":7.9,"end":8.6}
+{"trace":"t2","id":"15","kind":"human","name":"user","start":8.7,"end":9.0}

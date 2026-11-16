@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Agent trace explorer</title>
+  </head>
+  <body>
+    <header>
+      <h1>Agent trace explorer</h1>
+      <p id="summary"></p>
+      <label class="button">Open traces <input id="open" type="file" accept=".json,.jsonl" hidden /></label>
+      <label class="button">Compare with <input id="compare" type="file" accept=".json,.jsonl" hidden /></label>
+    </header>
+    <main>
+      <section class="panel corpus">
+        <h2>Variants</h2>
+        <input id="query" placeholder="highlight runs matching a query, e.g. tool! -> model -> tool" spellcheck="false" />
+        <p id="problem" class="problem"></p>
+        <div id="variants"></div>
+      </section>
+      <section class="panel run">
+        <h2>Selected runs</h2>
+        <nav id="runs"><p class="hint">Click a variant to list its runs.</p></nav>
+        <div id="run"></div>
+      </section>
+      <section class="panel flows">
+        <h2>Transitions</h2>
+        <div id="transitions"></div>
+      </section>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

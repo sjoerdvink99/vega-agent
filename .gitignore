@@ -1,0 +1,15 @@
+__pycache__/
+*.egg-info/
+.venv/
+.ipynb_checkpoints/
+.pytest_cache/
+dist/
+node_modules/
+.ruff_cache/
+js/dist/
+site/
+examples/explorer/dist/
+examples/node/report/
+examples/notebooks/*.svg
+examples/notebooks/*.xes
+.DS_Store

@@ -1,0 +1,17 @@
+{
+  "name": "vega-agent-report",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc",
+    "report": "tsx report.ts ../data/copilot-model-a.jsonl ../data/copilot-model-b.jsonl report"
+  },
+  "dependencies": {
+    "vega-agent": "file:../../js"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0"
+  }
+}

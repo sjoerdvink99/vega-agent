@@ -1,0 +1,226 @@
+{
+  "rules": [
+    {
+      "standard": "OpenTelemetry GenAI",
+      "key": "gen_ai.operation.name",
+      "values": {
+        "chat": "model",
+        "text_completion": "model",
+        "generate_content": "model",
+        "embeddings": "model",
+        "execute_tool": "tool",
+        "retrieval": "tool.retrieve",
+        "invoke_agent": "agent",
+        "invoke_workflow": "code",
+        "create_agent": null,
+        "realtime_inference": "model",
+        "plan": "code.plan",
+        "invoke_runner": "code",
+        "user_speech": "human",
+        "search_memory": "tool.memory",
+        "create_memory": "tool.memory",
+        "update_memory": "tool.memory",
+        "upsert_memory": "tool.memory",
+        "delete_memory": "tool.memory",
+        "create_memory_store": null,
+        "delete_memory_store": null,
+        "fetch_response": null
+      }
+    },
+    {
+      "standard": "OpenTelemetry MCP",
+      "key": "mcp.method.name",
+      "values": {
+        "tools/call": "tool",
+        "sampling/createMessage": "model",
+        "elicitation/create": "human",
+        "resources/read": "code.read_resource",
+        "prompts/get": "code.get_prompt"
+      }
+    },
+    {
+      "standard": "OpenInference",
+      "key": "openinference.span.kind",
+      "values": {
+        "LLM": "model",
+        "EMBEDDING": "model",
+        "TOOL": "tool",
+        "RETRIEVER": "tool.retrieve",
+        "AGENT": "agent",
+        "CHAIN": "code",
+        "RERANKER": "code.rerank",
+        "GUARDRAIL": "code.guardrail",
+        "EVALUATOR": "code.evaluate",
+        "DECISION": "code.decide",
+        "PROMPT": null
+      }
+    },
+    {
+      "standard": "Langfuse",
+      "key": "langfuse.observation.type",
+      "values": {
+        "generation": "model",
+        "embedding": "model",
+        "tool": "tool",
+        "retriever": "tool.retrieve",
+        "agent": "agent",
+        "chain": "code",
+        "evaluator": "code.evaluate",
+        "guardrail": "code.guardrail",
+        "span": null,
+        "event": null
+      }
+    },
+    {
+      "standard": "OpenLLMetry",
+      "key": "traceloop.span.kind",
+      "values": {
+        "agent": "agent",
+        "tool": "tool",
+        "workflow": "code",
+        "task": "code"
+      }
+    },
+    {
+      "standard": "OpenLLMetry",
+      "key": "llm.request.type",
+      "values": {
+        "chat": "model",
+        "completion": "model",
+        "embedding": "model",
+        "rerank": "code.rerank"
+      }
+    },
+    {
+      "standard": "Vercel AI SDK",
+      "key": "ai.operationId",
+      "values": {
+        "ai.generateText.doGenerate": "model",
+        "ai.streamText.doStream": "model",
+        "ai.generateObject.doGenerate": "model",
+        "ai.streamObject.doStream": "model",
+        "ai.embed.doEmbed": "model",
+        "ai.embedMany.doEmbed": "model",
+        "ai.toolCall": "tool"
+      }
+    },
+    {
+      "standard": "MLflow",
+      "key": "mlflow.spanType",
+      "values": {
+        "LLM": "model",
+        "CHAT_MODEL": "model",
+        "EMBEDDING": "model",
+        "TOOL": "tool",
+        "RETRIEVER": "tool.retrieve",
+        "MEMORY": "tool.memory",
+        "AGENT": "agent",
+        "CHAIN": "code",
+        "WORKFLOW": "code",
+        "TASK": "code",
+        "PARSER": "code.parse",
+        "RERANKER": "code.rerank",
+        "GUARDRAIL": "code.guardrail",
+        "EVALUATOR": "code.evaluate"
+      }
+    },
+    {
+      "standard": "vega-agent",
+      "key": "vega_agent.actor",
+      "values": {
+        "model": "model",
+        "tool": "tool",
+        "agent": "agent",
+        "human": "human",
+        "code": "code"
+      }
+    }
+  ],
+  "names": {
+    "tool": ["gen_ai.tool.name", "tool.name", "ai.toolCall.name", "traceloop.entity.name", "vega_agent.name"],
+    "agent": ["gen_ai.agent.name", "agent.name", "traceloop.entity.name", "vega_agent.name"],
+    "code": ["gen_ai.workflow.name", "traceloop.entity.name", "vega_agent.name"],
+    "model": ["vega_agent.name"],
+    "human": ["vega_agent.name"]
+  },
+  "failure": {
+    "status": [2, "2", "ERROR", "STATUS_CODE_ERROR"],
+    "attributes": ["error.type", "exception.type"],
+    "events": ["exception"]
+  },
+  "spans": {
+    "openai-agents": {
+      "agent": "agent",
+      "function": "tool",
+      "generation": "model",
+      "response": "model",
+      "guardrail": "code.guardrail",
+      "transcription": "model",
+      "speech": "model",
+      "handoff": null,
+      "custom": null,
+      "mcp_tools": null,
+      "speech_group": null
+    },
+    "langsmith": {
+      "llm": "model",
+      "embedding": "model",
+      "tool": "tool",
+      "retriever": "tool.retrieve",
+      "chain": "code",
+      "parser": "code.parse",
+      "prompt": null
+    }
+  },
+  "export": {
+    "model": "chat",
+    "tool": "execute_tool",
+    "agent": "invoke_agent",
+    "code": "invoke_workflow"
+  },
+  "messages": {
+    "roles": {
+      "user": "user",
+      "human": "user",
+      "assistant": "assistant",
+      "model": "assistant",
+      "ai": "assistant",
+      "gpt": "assistant",
+      "bot": "assistant",
+      "chatbot": "assistant",
+      "tool": "tool",
+      "function": "tool",
+      "ipython": "tool",
+      "observation": "tool",
+      "system": "system",
+      "developer": "system"
+    },
+    "hosted": ["web_search_call", "file_search_call", "computer_call", "code_interpreter_call", "image_generation_call", "local_shell_call", "mcp_call"],
+    "calls": ["tool_use", "server_tool_use", "mcp_tool_use"],
+    "injected": [
+      "<environment_context>",
+      "<user_instructions>",
+      "# AGENTS.md instructions",
+      "<local-command-stdout>",
+      "<local-command-stderr>",
+      "<system-reminder>"
+    ],
+    "subagents": ["Task", "Agent"]
+  },
+  "trajectories": {
+    "openhands": {
+      "run": "tool",
+      "run_ipython": "tool",
+      "read": "tool",
+      "write": "tool",
+      "edit": "tool",
+      "browse": "tool",
+      "browse_interactive": "tool",
+      "mcp": "tool",
+      "think": "tool",
+      "delegate": "agent",
+      "message": "model",
+      "finish": "model"
+    }
+  }
+}

@@ -1,0 +1,2937 @@
+[
+  {
+    "standard": "OpenTelemetry GenAI",
+    "reader": "otel",
+    "expected": "model -> tool.lookup || tool.search! -> model",
+    "agent": "copilot",
+    "input": [
+      {
+        "traceId": "t",
+        "spanId": "r",
+        "name": "invoke_agent copilot",
+        "startTimeUnixNano": "0",
+        "endTimeUnixNano": "4000000000",
+        "attributes": {
+          "gen_ai.operation.name": "invoke_agent",
+          "gen_ai.agent.name": "copilot"
+        }
+      },
+      {
+        "traceId": "t",
+        "spanId": "1",
+        "parentSpanId": "r",
+        "name": "chat gpt",
+        "startTimeUnixNano": "0",
+        "endTimeUnixNano": "1000000000",
+        "attributes": {
+          "gen_ai.operation.name": "chat"
+        }
+      },
+      {
+        "traceId": "t",
+        "spanId": "2",
+        "parentSpanId": "r",
+        "name": "execute_tool search",
+        "startTimeUnixNano": "1000000000",
+        "endTimeUnixNano": "2000000000",
+        "attributes": {
+          "gen_ai.operation.name": "execute_tool",
+          "gen_ai.tool.name": "search",
+          "error.type": "timeout"
+        }
+      },
+      {
+        "traceId": "t",
+        "spanId": "3",
+        "parentSpanId": "r",
+        "name": "execute_tool lookup",
+        "startTimeUnixNano": "1100000000",
+        "endTimeUnixNano": "1500000000",
+        "attributes": {
+          "gen_ai.operation.name": "execute_tool",
+          "gen_ai.tool.name": "lookup"
+        }
+      },
+      {
+        "traceId": "t",
+        "spanId": "4",
+        "parentSpanId": "r",
+        "name": "chat gpt",
+        "startTimeUnixNano": "2000000000",
+        "endTimeUnixNano": "3000000000",
+        "attributes": {
+          "gen_ai.operation.name": "chat"
+        }
+      }
+    ]
+  },
+  {
+    "standard": "OTLP/JSON export",
+    "reader": "otel",
+    "expected": "model -> tool.search",
+    "input": [
+      {
+        "resourceSpans": [
+          {
+            "resource": {
+              "attributes": []
+            },
+            "scopeSpans": [
+              {
+                "scope": {
+                  "name": "x"
+                },
+                "spans": [
+                  {
+                    "traceId": "t",
+                    "spanId": "1",
+                    "name": "chat",
+                    "startTimeUnixNano": "0",
+                    "endTimeUnixNano": "1",
+                    "attributes": [
+                      {
+                        "key": "gen_ai.operation.name",
+                        "value": {
+                          "stringValue": "chat"
+                        }
+                      }
+                    ],
+                    "status": {
+                      "code": 1
+                    }
+                  },
+                  {
+                    "traceId": "t",
+                    "spanId": "2",
+                    "name": "execute_tool search",
+                    "startTimeUnixNano": "1",
+                    "endTimeUnixNano": "2",
+                    "attributes": [
+                      {
+                        "key": "gen_ai.operation.name",
+                        "value": {
+                          "stringValue": "execute_tool"
+                        }
+                      },
+                      {
+                        "key": "gen_ai.tool.name",
+                        "value": {
+                          "stringValue": "search"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "standard": "OpenTelemetry MCP",
+    "reader": "otel",
+    "expected": "model -> tool.summarize{ model } -> human",
+    "input": [
+      {
+        "traceId": "t",
+        "spanId": "1",
+        "name": "chat",
+        "startTimeUnixNano": "0",
+        "endTimeUnixNano": "1",
+        "attributes": {
+          "gen_ai.operation.name": "chat"
+        }
+      },
+      {
+        "traceId": "t",
+        "spanId": "2",
+        "name": "tools/call summarize",
+        "startTimeUnixNano": "1",
+        "endTimeUnixNano": "4",
+        "attributes": {
+          "mcp.method.name": "tools/call",
+          "gen_ai.tool.name": "summarize"
+        }
+      },
+      {
+        "traceId": "t",
+        "spanId": "3",
+        "parentSpanId": "2",
+        "name": "sampling/createMessage",
+        "startTimeUnixNano": "2",
+        "endTimeUnixNano": "3",
+        "attributes": {
+          "mcp.method.name": "sampling/createMessage"
+        }
+      },
+      {
+        "traceId": "t",
+        "spanId": "4",
+        "name": "elicitation/create",
+        "startTimeUnixNano": "4",
+        "endTimeUnixNano": "5",
+        "attributes": {
+          "mcp.method.name": "elicitation/create"
+        }
+      }
+    ]
+  },
+  {
+    "standard": "OpenInference",
+    "reader": "otel",
+    "expected": "model -> tool.web_search -> agent.researcher{ model -> tool.retrieve }",
+    "input": [
+      {
+        "traceId": "t",
+        "spanId": "1",
+        "name": "ChatCompletion",
+        "start_time": "2026-01-01T00:00:00Z",
+        "end_time": "2026-01-01T00:00:01Z",
+        "attributes": {
+          "openinference.span.kind": "LLM"
+        }
+      },
+      {
+        "traceId": "t",
+        "spanId": "2",
+        "name": "search",
+        "start_time": "2026-01-01T00:00:01Z",
+        "end_time": "2026-01-01T00:00:02Z",
+        "attributes": {
+          "openinference.span.kind": "TOOL",
+          "tool.name": "web-search"
+        }
+      },
+      {
+        "traceId": "t",
+        "spanId": "3",
+        "name": "researcher",
+        "start_time": "2026-01-01T00:00:02Z",
+        "end_time": "2026-01-01T00:00:05Z",
+        "attributes": {
+          "openinference.span.kind": "AGENT",
+          "agent.name": "researcher"
+        }
+      },
+      {
+        "traceId": "t",
+        "spanId": "4",
+        "parent_id": "3",
+        "name": "ChatCompletion",
+        "start_time": "2026-01-01T00:00:02Z",
+        "end_time": "2026-01-01T00:00:03Z",
+        "attributes": {
+          "openinference.span.kind": "LLM"
+        }
+      },
+      {
+        "traceId": "t",
+        "spanId": "5",
+        "parent_id": "3",
+        "name": "VectorStoreRetriever",
+        "start_time": "2026-01-01T00:00:03Z",
+        "end_time": "2026-01-01T00:00:04Z",
+        "attributes": {
+          "openinference.span.kind": "RETRIEVER"
+        }
+      }
+    ]
+  },
+  {
+    "standard": "OpenLLMetry",
+    "reader": "otel",
+    "expected": "model -> tool.lookup",
+    "agent": "planner",
+    "input": [
+      {
+        "traceId": "t",
+        "spanId": "w",
+        "name": "pipeline.workflow",
+        "startTimeUnixNano": "0",
+        "endTimeUnixNano": "9",
+        "attributes": {
+          "traceloop.span.kind": "workflow",
+          "traceloop.entity.name": "pipeline"
+        }
+      },
+      {
+        "traceId": "t",
+        "spanId": "a",
+        "parentSpanId": "w",
+        "name": "planner.agent",
+        "startTimeUnixNano": "0",
+        "endTimeUnixNano": "9",
+        "attributes": {
+          "traceloop.span.kind": "agent",
+          "traceloop.entity.name": "planner"
+        }
+      },
+      {
+        "traceId": "t",
+        "spanId": "1",
+        "parentSpanId": "a",
+        "name": "openai.chat",
+        "startTimeUnixNano": "1",
+        "endTimeUnixNano": "2",
+        "attributes": {
+          "llm.request.type": "chat"
+        }
+      },
+      {
+        "traceId": "t",
+        "spanId": "2",
+        "parentSpanId": "a",
+        "name": "lookup.tool",
+        "startTimeUnixNano": "3",
+        "endTimeUnixNano": "4",
+        "attributes": {
+          "traceloop.span.kind": "tool",
+          "traceloop.entity.name": "lookup"
+        }
+      }
+    ]
+  },
+  {
+    "standard": "Langfuse",
+    "reader": "otel",
+    "expected": "model -> tool.lookup -> model",
+    "input": [
+      {
+        "traceId": "t",
+        "spanId": "1",
+        "name": "llm",
+        "startTimeUnixNano": "0",
+        "endTimeUnixNano": "1",
+        "attributes": {
+          "langfuse.observation.type": "generation"
+        }
+      },
+      {
+        "traceId": "t",
+        "spanId": "2",
+        "name": "lookup",
+        "startTimeUnixNano": "1",
+        "endTimeUnixNano": "2",
+        "attributes": {
+          "langfuse.observation.type": "tool"
+        }
+      },
+      {
+        "traceId": "t",
+        "spanId": "3",
+        "name": "llm",
+        "startTimeUnixNano": "2",
+        "endTimeUnixNano": "3",
+        "attributes": {
+          "langfuse.observation.type": "generation"
+        }
+      }
+    ]
+  },
+  {
+    "standard": "Vercel AI SDK",
+    "reader": "otel",
+    "expected": "model -> tool.weather -> model",
+    "input": [
+      {
+        "traceId": "t",
+        "spanId": "g",
+        "name": "ai.generateText",
+        "startTimeUnixNano": "0",
+        "endTimeUnixNano": "9",
+        "attributes": {
+          "ai.operationId": "ai.generateText"
+        }
+      },
+      {
+        "traceId": "t",
+        "spanId": "1",
+        "parentSpanId": "g",
+        "name": "ai.generateText.doGenerate",
+        "startTimeUnixNano": "1",
+        "endTimeUnixNano": "2",
+        "attributes": {
+          "ai.operationId": "ai.generateText.doGenerate"
+        }
+      },
+      {
+        "traceId": "t",
+        "spanId": "2",
+        "parentSpanId": "g",
+        "name": "ai.toolCall",
+        "startTimeUnixNano": "3",
+        "endTimeUnixNano": "4",
+        "attributes": {
+          "ai.operationId": "ai.toolCall",
+          "ai.toolCall.name": "weather"
+        }
+      },
+      {
+        "traceId": "t",
+        "spanId": "3",
+        "parentSpanId": "g",
+        "name": "ai.generateText.doGenerate",
+        "startTimeUnixNano": "5",
+        "endTimeUnixNano": "6",
+        "attributes": {
+          "ai.operationId": "ai.generateText.doGenerate"
+        }
+      }
+    ]
+  },
+  {
+    "standard": "OpenAI Agents SDK",
+    "reader": "openai_agents",
+    "expected": "agent.Triage{ model -> tool.get_weather! } -> agent.Weather{ model }",
+    "input": [
+      {
+        "object": "trace.span",
+        "id": "s1",
+        "trace_id": "t",
+        "parent_id": null,
+        "started_at": "2026-01-01T00:00:00Z",
+        "ended_at": "2026-01-01T00:00:03Z",
+        "span_data": {
+          "type": "agent",
+          "name": "Triage"
+        },
+        "error": null
+      },
+      {
+        "object": "trace.span",
+        "id": "s2",
+        "trace_id": "t",
+        "parent_id": "s1",
+        "started_at": "2026-01-01T00:00:00Z",
+        "ended_at": "2026-01-01T00:00:01Z",
+        "span_data": {
+          "type": "generation",
+          "model": "gpt"
+        },
+        "error": null
+      },
+      {
+        "object": "trace.span",
+        "id": "s3",
+        "trace_id": "t",
+        "parent_id": "s1",
+        "started_at": "2026-01-01T00:00:01Z",
+        "ended_at": "2026-01-01T00:00:02Z",
+        "span_data": {
+          "type": "function",
+          "name": "get_weather"
+        },
+        "error": {
+          "message": "timeout",
+          "data": null
+        }
+      },
+      {
+        "object": "trace.span",
+        "id": "s4",
+        "trace_id": "t",
+        "parent_id": "s1",
+        "started_at": "2026-01-01T00:00:02Z",
+        "ended_at": "2026-01-01T00:00:03Z",
+        "span_data": {
+          "type": "handoff",
+          "from_agent": "Triage",
+          "to_agent": "Weather"
+        },
+        "error": null
+      },
+      {
+        "object": "trace.span",
+        "id": "s5",
+        "trace_id": "t",
+        "parent_id": null,
+        "started_at": "2026-01-01T00:00:03Z",
+        "ended_at": "2026-01-01T00:00:05Z",
+        "span_data": {
+          "type": "agent",
+          "name": "Weather"
+        },
+        "error": null
+      },
+      {
+        "object": "trace.span",
+        "id": "s6",
+        "trace_id": "t",
+        "parent_id": "s5",
+        "started_at": "2026-01-01T00:00:03Z",
+        "ended_at": "2026-01-01T00:00:04Z",
+        "span_data": {
+          "type": "response",
+          "response_id": "r"
+        },
+        "error": null
+      }
+    ]
+  },
+  {
+    "standard": "LangSmith",
+    "reader": "langsmith",
+    "expected": "model -> tool.search! -> model",
+    "input": [
+      {
+        "id": "r",
+        "name": "AgentExecutor",
+        "run_type": "chain",
+        "start_time": "2026-01-01T00:00:00Z",
+        "end_time": "2026-01-01T00:00:09Z",
+        "child_runs": [
+          {
+            "id": "1",
+            "parent_run_id": "r",
+            "trace_id": "r",
+            "name": "ChatOpenAI",
+            "run_type": "llm",
+            "start_time": "2026-01-01T00:00:01Z",
+            "end_time": "2026-01-01T00:00:02Z"
+          },
+          {
+            "id": "2",
+            "parent_run_id": "r",
+            "trace_id": "r",
+            "name": "search",
+            "run_type": "tool",
+            "start_time": "2026-01-01T00:00:03Z",
+            "end_time": "2026-01-01T00:00:04Z",
+            "error": "HTTP 500"
+          },
+          {
+            "id": "3",
+            "parent_run_id": "r",
+            "trace_id": "r",
+            "name": "ChatOpenAI",
+            "run_type": "llm",
+            "start_time": "2026-01-01T00:00:05Z",
+            "end_time": "2026-01-01T00:00:06Z"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "standard": "OpenAI Chat Completions",
+    "reader": "messages",
+    "expected": "human -> model -> tool.fetch || tool.search -> model",
+    "input": [
+      {
+        "role": "system",
+        "content": "You are helpful."
+      },
+      {
+        "role": "user",
+        "content": "Find the paper."
+      },
+      {
+        "role": "assistant",
+        "content": null,
+        "tool_calls": [
+          {
+            "id": "c1",
+            "type": "function",
+            "function": {
+              "name": "search",
+              "arguments": "{}"
+            }
+          },
+          {
+            "id": "c2",
+            "type": "function",
+            "function": {
+              "name": "fetch",
+              "arguments": "{}"
+            }
+          }
+        ]
+      },
+      {
+        "role": "tool",
+        "tool_call_id": "c1",
+        "content": "..."
+      },
+      {
+        "role": "tool",
+        "tool_call_id": "c2",
+        "content": "..."
+      },
+      {
+        "role": "assistant",
+        "content": "Here it is."
+      }
+    ]
+  },
+  {
+    "standard": "OpenAI Responses",
+    "reader": "messages",
+    "expected": "human -> model -> tool.search -> model -> tool.web_search!",
+    "input": [
+      {
+        "type": "message",
+        "role": "user",
+        "content": "Find the paper."
+      },
+      {
+        "type": "reasoning",
+        "id": "rs1",
+        "summary": []
+      },
+      {
+        "type": "function_call",
+        "call_id": "c1",
+        "name": "search",
+        "arguments": "{}"
+      },
+      {
+        "type": "function_call_output",
+        "call_id": "c1",
+        "output": "..."
+      },
+      {
+        "type": "web_search_call",
+        "id": "ws1",
+        "status": "failed"
+      },
+      {
+        "type": "message",
+        "role": "assistant",
+        "content": [
+          {
+            "type": "output_text",
+            "text": "Here it is."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "standard": "Anthropic Messages",
+    "reader": "messages",
+    "expected": "human -> model -> tool.get_time || tool.get_weather! -> model",
+    "input": {
+      "messages": [
+        {
+          "role": "user",
+          "content": "Weather and time in Delft?"
+        },
+        {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "Checking."
+            },
+            {
+              "type": "tool_use",
+              "id": "t1",
+              "name": "get_weather",
+              "input": {}
+            },
+            {
+              "type": "tool_use",
+              "id": "t2",
+              "name": "get_time",
+              "input": {}
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "tool_result",
+              "tool_use_id": "t1",
+              "is_error": true,
+              "content": "unavailable"
+            },
+            {
+              "type": "tool_result",
+              "tool_use_id": "t2",
+              "content": "14:00"
+            }
+          ]
+        },
+        {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "It is 14:00."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "standard": "Gemini",
+    "reader": "messages",
+    "expected": "human -> model -> tool.lookup! -> model",
+    "input": {
+      "contents": [
+        {
+          "role": "user",
+          "parts": [
+            {
+              "text": "Look it up."
+            }
+          ]
+        },
+        {
+          "role": "model",
+          "parts": [
+            {
+              "functionCall": {
+                "name": "lookup",
+                "args": {}
+              }
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "parts": [
+            {
+              "functionResponse": {
+                "name": "lookup",
+                "response": {
+                  "error": "not found"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "role": "model",
+          "parts": [
+            {
+              "text": "Not found."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "standard": "ATIF",
+    "reader": "atif",
+    "expected": "human -> model -> tool.grep -> model",
+    "input": {
+      "schema_version": "ATIF-v1.8",
+      "trajectory_id": "x",
+      "agent": {
+        "name": "coder",
+        "version": "1"
+      },
+      "steps": [
+        {
+          "step_id": 1,
+          "source": "user",
+          "message": "Find it."
+        },
+        {
+          "step_id": 2,
+          "source": "agent",
+          "message": "",
+          "tool_calls": [
+            {
+              "tool_call_id": "c",
+              "function_name": "grep",
+              "arguments": {}
+            }
+          ],
+          "observation": {
+            "results": [
+              {
+                "source_call_id": "c",
+                "content": "..."
+              }
+            ]
+          }
+        },
+        {
+          "step_id": 3,
+          "source": "agent",
+          "message": "Found."
+        }
+      ]
+    }
+  },
+  {
+    "standard": "OpenTelemetry: values of the wrong type",
+    "reader": "otel",
+    "input": [
+      {
+        "traceId": 7,
+        "spanId": 1,
+        "name": {
+          "a": 1
+        },
+        "startTimeUnixNano": "0",
+        "endTimeUnixNano": "1",
+        "attributes": {
+          "gen_ai.operation.name": "chat"
+        },
+        "status": null,
+        "context": []
+      },
+      {
+        "traceId": 7,
+        "spanId": 2,
+        "parentSpanId": [1],
+        "startTimeUnixNano": 0,
+        "endTimeUnixNano": "2000000000",
+        "attributes": {
+          "gen_ai.operation.name": "execute_tool",
+          "gen_ai.tool.name": {
+            "x": 1
+          }
+        }
+      },
+      {
+        "traceId": 7,
+        "spanId": "",
+        "startTimeUnixNano": "3000000000",
+        "attributes": {
+          "gen_ai.operation.name": "execute_tool",
+          "gen_ai.tool.name": 42
+        }
+      },
+      {
+        "traceId": 7,
+        "spanId": "4",
+        "startTimeUnixNano": "4000000000",
+        "attributes": {
+          "gen_ai.operation.name": ["chat"]
+        }
+      },
+      {
+        "traceId": 7,
+        "spanId": "5",
+        "startTimeUnixNano": "5000000000",
+        "attributes": {
+          "gen_ai.operation.name": "constructor"
+        }
+      },
+      {
+        "traceId": 7,
+        "spanId": "6",
+        "startTimeUnixNano": "6000000000",
+        "attributes": {
+          "gen_ai.operation.name": "toString"
+        }
+      }
+    ],
+    "expected": "model || tool -> tool._42"
+  },
+  {
+    "standard": "OpenTelemetry: names outside the grammar's alphabet",
+    "reader": "otel",
+    "input": [
+      {
+        "traceId": "t",
+        "spanId": "1",
+        "startTimeUnixNano": "1",
+        "attributes": {
+          "gen_ai.operation.name": "execute_tool",
+          "gen_ai.tool.name": "é-search/v2"
+        }
+      },
+      {
+        "traceId": "t",
+        "spanId": "2",
+        "startTimeUnixNano": "2",
+        "attributes": {
+          "gen_ai.operation.name": "execute_tool",
+          "gen_ai.tool.name": "2fa.check"
+        }
+      },
+      {
+        "traceId": "t",
+        "spanId": "3",
+        "startTimeUnixNano": "3",
+        "attributes": {
+          "gen_ai.operation.name": "execute_tool",
+          "gen_ai.tool.name": "---"
+        }
+      }
+    ],
+    "expected": "tool.search_v2 -> tool._2fa_check -> tool"
+  },
+  {
+    "standard": "OpenTelemetry: nesting deeper than the reader follows",
+    "reader": "otel",
+    "input": [
+      {
+        "traceId": "deep",
+        "spanId": "s0",
+        "parentSpanId": "",
+        "startTimeUnixNano": "0",
+        "endTimeUnixNano": "1000",
+        "attributes": {
+          "gen_ai.operation.name": "invoke_agent",
+          "gen_ai.agent.name": "a0"
+        }
+      },
+      {
+        "traceId": "deep",
+        "spanId": "s1",
+        "parentSpanId": "s0",
+        "startTimeUnixNano": "1",
+        "endTimeUnixNano": "999",
+        "attributes": {
+          "gen_ai.operation.name": "invoke_agent",
+          "gen_ai.agent.name": "a1"
+        }
+      },
+      {
+        "traceId": "deep",
+        "spanId": "s2",
+        "parentSpanId": "s1",
+        "startTimeUnixNano": "2",
+        "endTimeUnixNano": "998",
+        "attributes": {
+          "gen_ai.operation.name": "invoke_agent",
+          "gen_ai.agent.name": "a2"
+        }
+      },
+      {
+        "traceId": "deep",
+        "spanId": "s3",
+        "parentSpanId": "s2",
+        "startTimeUnixNano": "3",
+        "endTimeUnixNano": "997",
+        "attributes": {
+          "gen_ai.operation.name": "invoke_agent",
+          "gen_ai.agent.name": "a3"
+        }
+      },
+      {
+        "traceId": "deep",
+        "spanId": "s4",
+        "parentSpanId": "s3",
+        "startTimeUnixNano": "4",
+        "endTimeUnixNano": "996",
+        "attributes": {
+          "gen_ai.operation.name": "invoke_agent",
+          "gen_ai.agent.name": "a4"
+        }
+      },
+      {
+        "traceId": "deep",
+        "spanId": "s5",
+        "parentSpanId": "s4",
+        "startTimeUnixNano": "5",
+        "endTimeUnixNano": "995",
+        "attributes": {
+          "gen_ai.operation.name": "invoke_agent",
+          "gen_ai.agent.name": "a5"
+        }
+      },
+      {
+        "traceId": "deep",
+        "spanId": "s6",
+        "parentSpanId": "s5",
+        "startTimeUnixNano": "6",
+        "endTimeUnixNano": "994",
+        "attributes": {
+          "gen_ai.operation.name": "invoke_agent",
+          "gen_ai.agent.name": "a6"
+        }
+      },
+      {
+        "traceId": "deep",
+        "spanId": "s7",
+        "parentSpanId": "s6",
+        "startTimeUnixNano": "7",
+        "endTimeUnixNano": "993",
+        "attributes": {
+          "gen_ai.operation.name": "invoke_agent",
+          "gen_ai.agent.name": "a7"
+        }
+      },
+      {
+        "traceId": "deep",
+        "spanId": "s8",
+        "parentSpanId": "s7",
+        "startTimeUnixNano": "8",
+        "endTimeUnixNano": "992",
+        "attributes": {
+          "gen_ai.operation.name": "invoke_agent",
+          "gen_ai.agent.name": "a8"
+        }
+      },
+      {
+        "traceId": "deep",
+        "spanId": "s9",
+        "parentSpanId": "s8",
+        "startTimeUnixNano": "9",
+        "endTimeUnixNano": "991",
+        "attributes": {
+          "gen_ai.operation.name": "invoke_agent",
+          "gen_ai.agent.name": "a9"
+        }
+      },
+      {
+        "traceId": "deep",
+        "spanId": "s10",
+        "parentSpanId": "s9",
+        "startTimeUnixNano": "10",
+        "endTimeUnixNano": "990",
+        "attributes": {
+          "gen_ai.operation.name": "invoke_agent",
+          "gen_ai.agent.name": "a10"
+        }
+      },
+      {
+        "traceId": "deep",
+        "spanId": "s11",
+        "parentSpanId": "s10",
+        "startTimeUnixNano": "11",
+        "endTimeUnixNano": "989",
+        "attributes": {
+          "gen_ai.operation.name": "invoke_agent",
+          "gen_ai.agent.name": "a11"
+        }
+      },
+      {
+        "traceId": "deep",
+        "spanId": "s12",
+        "parentSpanId": "s11",
+        "startTimeUnixNano": "12",
+        "endTimeUnixNano": "988",
+        "attributes": {
+          "gen_ai.operation.name": "invoke_agent",
+          "gen_ai.agent.name": "a12"
+        }
+      },
+      {
+        "traceId": "deep",
+        "spanId": "s13",
+        "parentSpanId": "s12",
+        "startTimeUnixNano": "13",
+        "endTimeUnixNano": "987",
+        "attributes": {
+          "gen_ai.operation.name": "invoke_agent",
+          "gen_ai.agent.name": "a13"
+        }
+      },
+      {
+        "traceId": "deep",
+        "spanId": "s14",
+        "parentSpanId": "s13",
+        "startTimeUnixNano": "14",
+        "endTimeUnixNano": "986",
+        "attributes": {
+          "gen_ai.operation.name": "invoke_agent",
+          "gen_ai.agent.name": "a14"
+        }
+      },
+      {
+        "traceId": "deep",
+        "spanId": "s15",
+        "parentSpanId": "s14",
+        "startTimeUnixNano": "15",
+        "endTimeUnixNano": "985",
+        "attributes": {
+          "gen_ai.operation.name": "invoke_agent",
+          "gen_ai.agent.name": "a15"
+        }
+      },
+      {
+        "traceId": "deep",
+        "spanId": "s16",
+        "parentSpanId": "s15",
+        "startTimeUnixNano": "16",
+        "endTimeUnixNano": "984",
+        "attributes": {
+          "gen_ai.operation.name": "invoke_agent",
+          "gen_ai.agent.name": "a16"
+        }
+      },
+      {
+        "traceId": "deep",
+        "spanId": "s17",
+        "parentSpanId": "s16",
+        "startTimeUnixNano": "17",
+        "endTimeUnixNano": "983",
+        "attributes": {
+          "gen_ai.operation.name": "invoke_agent",
+          "gen_ai.agent.name": "a17"
+        }
+      },
+      {
+        "traceId": "deep",
+        "spanId": "s18",
+        "parentSpanId": "s17",
+        "startTimeUnixNano": "18",
+        "endTimeUnixNano": "982",
+        "attributes": {
+          "gen_ai.operation.name": "invoke_agent",
+          "gen_ai.agent.name": "a18"
+        }
+      },
+      {
+        "traceId": "deep",
+        "spanId": "s19",
+        "parentSpanId": "s18",
+        "startTimeUnixNano": "19",
+        "endTimeUnixNano": "981",
+        "attributes": {
+          "gen_ai.operation.name": "invoke_agent",
+          "gen_ai.agent.name": "a19"
+        }
+      },
+      {
+        "traceId": "deep",
+        "spanId": "s20",
+        "parentSpanId": "s19",
+        "startTimeUnixNano": "20",
+        "endTimeUnixNano": "980",
+        "attributes": {
+          "gen_ai.operation.name": "invoke_agent",
+          "gen_ai.agent.name": "a20"
+        }
+      },
+      {
+        "traceId": "deep",
+        "spanId": "s21",
+        "parentSpanId": "s20",
+        "startTimeUnixNano": "21",
+        "endTimeUnixNano": "979",
+        "attributes": {
+          "gen_ai.operation.name": "invoke_agent",
+          "gen_ai.agent.name": "a21"
+        }
+      },
+      {
+        "traceId": "deep",
+        "spanId": "s22",
+        "parentSpanId": "s21",
+        "startTimeUnixNano": "22",
+        "endTimeUnixNano": "978",
+        "attributes": {
+          "gen_ai.operation.name": "invoke_agent",
+          "gen_ai.agent.name": "a22"
+        }
+      },
+      {
+        "traceId": "deep",
+        "spanId": "s23",
+        "parentSpanId": "s22",
+        "startTimeUnixNano": "23",
+        "endTimeUnixNano": "977",
+        "attributes": {
+          "gen_ai.operation.name": "invoke_agent",
+          "gen_ai.agent.name": "a23"
+        }
+      },
+      {
+        "traceId": "deep",
+        "spanId": "s24",
+        "parentSpanId": "s23",
+        "startTimeUnixNano": "24",
+        "endTimeUnixNano": "976",
+        "attributes": {
+          "gen_ai.operation.name": "invoke_agent",
+          "gen_ai.agent.name": "a24"
+        }
+      },
+      {
+        "traceId": "deep",
+        "spanId": "s25",
+        "parentSpanId": "s24",
+        "startTimeUnixNano": "25",
+        "endTimeUnixNano": "975",
+        "attributes": {
+          "gen_ai.operation.name": "invoke_agent",
+          "gen_ai.agent.name": "a25"
+        }
+      },
+      {
+        "traceId": "deep",
+        "spanId": "s26",
+        "parentSpanId": "s25",
+        "startTimeUnixNano": "26",
+        "endTimeUnixNano": "974",
+        "attributes": {
+          "gen_ai.operation.name": "invoke_agent",
+          "gen_ai.agent.name": "a26"
+        }
+      },
+      {
+        "traceId": "deep",
+        "spanId": "s27",
+        "parentSpanId": "s26",
+        "startTimeUnixNano": "27",
+        "endTimeUnixNano": "973",
+        "attributes": {
+          "gen_ai.operation.name": "invoke_agent",
+          "gen_ai.agent.name": "a27"
+        }
+      },
+      {
+        "traceId": "deep",
+        "spanId": "s28",
+        "parentSpanId": "s27",
+        "startTimeUnixNano": "28",
+        "endTimeUnixNano": "972",
+        "attributes": {
+          "gen_ai.operation.name": "invoke_agent",
+          "gen_ai.agent.name": "a28"
+        }
+      },
+      {
+        "traceId": "deep",
+        "spanId": "s29",
+        "parentSpanId": "s28",
+        "startTimeUnixNano": "29",
+        "endTimeUnixNano": "971",
+        "attributes": {
+          "gen_ai.operation.name": "invoke_agent",
+          "gen_ai.agent.name": "a29"
+        }
+      }
+    ],
+    "expected": "agent.a0{ agent.a1{ agent.a2{ agent.a3{ agent.a4{ agent.a5{ agent.a6{ agent.a7{ agent.a8{ agent.a9{ agent.a10{ agent.a11{ agent.a12{ agent.a13{ agent.a14{ agent.a15{ agent.a16{ agent.a17{ agent.a18{ agent.a19{ agent.a20{ agent.a21{ agent.a22{ agent.a23{ agent.a24 } } } } } } } } } } } } } } } } } } } } } } } } -> agent.a25{ agent.a26{ agent.a27{ agent.a28{ agent.a29 } } } }"
+  },
+  {
+    "standard": "Messages: values of the wrong type",
+    "reader": "messages",
+    "input": [
+      {
+        "role": "user",
+        "content": "hi"
+      },
+      {
+        "role": "assistant",
+        "content": null,
+        "tool_calls": [
+          {
+            "id": ["x"],
+            "function": "read"
+          },
+          {
+            "id": 1,
+            "function": {
+              "name": 5
+            }
+          },
+          {
+            "function": null,
+            "name": "write"
+          }
+        ]
+      },
+      {
+        "role": ["tool"],
+        "content": "ignored"
+      },
+      {
+        "role": "model",
+        "parts": [
+          {
+            "functionCall": null
+          },
+          {
+            "functionCall": {
+              "name": "lookup"
+            }
+          }
+        ]
+      },
+      {
+        "role": "user",
+        "parts": [
+          {
+            "functionResponse": {
+              "name": "lookup",
+              "response": "error"
+            }
+          }
+        ]
+      },
+      {
+        "type": {
+          "a": 1
+        },
+        "role": "user",
+        "content": "thanks"
+      }
+    ],
+    "expected": "human -> model -> tool._5 || tool.read || tool.write -> model -> tool.lookup -> human"
+  },
+  {
+    "standard": "OpenTelemetry GenAI: memory, planning and exception events",
+    "reader": "otel",
+    "expected": "code.plan -> model -> tool.memory -> tool.search!",
+    "agent": "helper",
+    "input": [
+      {
+        "traceId": "t",
+        "spanId": "r",
+        "name": "invoke_agent helper",
+        "startTimeUnixNano": "0",
+        "endTimeUnixNano": "9",
+        "attributes": {
+          "gen_ai.operation.name": "invoke_agent",
+          "gen_ai.agent.name": "helper"
+        }
+      },
+      {
+        "traceId": "t",
+        "spanId": "1",
+        "parentSpanId": "r",
+        "name": "plan",
+        "startTimeUnixNano": "1",
+        "endTimeUnixNano": "2",
+        "attributes": {
+          "gen_ai.operation.name": "plan"
+        }
+      },
+      {
+        "traceId": "t",
+        "spanId": "2",
+        "parentSpanId": "r",
+        "name": "chat",
+        "startTimeUnixNano": "2",
+        "endTimeUnixNano": "3",
+        "attributes": {
+          "gen_ai.operation.name": "chat"
+        }
+      },
+      {
+        "traceId": "t",
+        "spanId": "3",
+        "parentSpanId": "r",
+        "name": "search_memory",
+        "startTimeUnixNano": "3",
+        "endTimeUnixNano": "4",
+        "attributes": {
+          "gen_ai.operation.name": "search_memory"
+        }
+      },
+      {
+        "traceId": "t",
+        "spanId": "4",
+        "parentSpanId": "r",
+        "name": "execute_tool search",
+        "startTimeUnixNano": "4",
+        "endTimeUnixNano": "5",
+        "attributes": {
+          "gen_ai.operation.name": "execute_tool"
+        },
+        "events": [
+          {
+            "name": "exception",
+            "attributes": {
+              "exception.message": "timeout"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "standard": "MLflow",
+    "reader": "otel",
+    "expected": "model -> tool.get_weather! -> model",
+    "agent": "planner",
+    "input": {
+      "info": {
+        "trace_id": "tr-1",
+        "state": "OK"
+      },
+      "data": {
+        "spans": [
+          {
+            "trace_id": "AAA=",
+            "span_id": "a",
+            "parent_span_id": null,
+            "name": "planner",
+            "start_time_unix_nano": 0,
+            "end_time_unix_nano": 9000,
+            "status": {
+              "code": "STATUS_CODE_OK"
+            },
+            "attributes": {
+              "mlflow.traceRequestId": "\"tr-1\"",
+              "mlflow.spanType": "\"AGENT\""
+            }
+          },
+          {
+            "trace_id": "AAA=",
+            "span_id": "b",
+            "parent_span_id": "a",
+            "name": "ChatOpenAI",
+            "start_time_unix_nano": 1000,
+            "end_time_unix_nano": 2000,
+            "status": {
+              "code": "STATUS_CODE_OK"
+            },
+            "attributes": {
+              "mlflow.spanType": "\"CHAT_MODEL\""
+            }
+          },
+          {
+            "trace_id": "AAA=",
+            "span_id": "c",
+            "parent_span_id": "a",
+            "name": "get_weather",
+            "start_time_unix_nano": 3000,
+            "end_time_unix_nano": 4000,
+            "status": {
+              "code": "STATUS_CODE_ERROR",
+              "message": "boom"
+            },
+            "attributes": {
+              "mlflow.spanType": "\"TOOL\""
+            }
+          },
+          {
+            "trace_id": "AAA=",
+            "span_id": "d",
+            "parent_span_id": "a",
+            "name": "ChatOpenAI",
+            "start_time_unix_nano": 5000,
+            "end_time_unix_nano": 6000,
+            "status": {
+              "code": "STATUS_CODE_OK"
+            },
+            "attributes": {
+              "mlflow.spanType": "\"CHAT_MODEL\""
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "standard": "MLflow 2",
+    "reader": "otel",
+    "expected": "model -> tool.search!",
+    "input": [
+      {
+        "name": "llm",
+        "context": {
+          "span_id": "0x1",
+          "trace_id": "0xt"
+        },
+        "parent_id": null,
+        "start_time": 1000,
+        "end_time": 2000,
+        "status_code": "OK",
+        "attributes": {
+          "mlflow.spanType": "\"LLM\""
+        }
+      },
+      {
+        "name": "search",
+        "context": {
+          "span_id": "0x2",
+          "trace_id": "0xt"
+        },
+        "parent_id": null,
+        "start_time": 3000,
+        "end_time": 4000,
+        "status_code": "ERROR",
+        "attributes": {
+          "mlflow.spanType": "\"TOOL\""
+        }
+      }
+    ]
+  },
+  {
+    "standard": "Jaeger",
+    "reader": "otel",
+    "expected": "model -> tool.search! -> model",
+    "input": {
+      "data": [
+        {
+          "traceID": "abc",
+          "processes": {
+            "p1": {
+              "serviceName": "agent"
+            }
+          },
+          "spans": [
+            {
+              "traceID": "abc",
+              "spanID": "1",
+              "operationName": "chat gpt",
+              "references": [],
+              "startTime": 1000000,
+              "duration": 1000000,
+              "tags": [
+                {
+                  "key": "gen_ai.operation.name",
+                  "type": "string",
+                  "value": "chat"
+                }
+              ],
+              "logs": [],
+              "processID": "p1"
+            },
+            {
+              "traceID": "abc",
+              "spanID": "2",
+              "operationName": "execute_tool search",
+              "references": [],
+              "startTime": 2000000,
+              "duration": 1000000,
+              "tags": [
+                {
+                  "key": "gen_ai.operation.name",
+                  "type": "string",
+                  "value": "execute_tool"
+                },
+                {
+                  "key": "gen_ai.tool.name",
+                  "type": "string",
+                  "value": "search"
+                },
+                {
+                  "key": "error",
+                  "type": "bool",
+                  "value": true
+                }
+              ],
+              "logs": [],
+              "processID": "p1"
+            },
+            {
+              "traceID": "abc",
+              "spanID": "3",
+              "operationName": "chat gpt",
+              "references": [
+                {
+                  "refType": "FOLLOWS_FROM",
+                  "traceID": "abc",
+                  "spanID": "2"
+                }
+              ],
+              "startTime": 3000000,
+              "duration": 1000000,
+              "tags": [
+                {
+                  "key": "gen_ai.operation.name",
+                  "type": "string",
+                  "value": "chat"
+                }
+              ],
+              "logs": [],
+              "processID": "p1"
+            }
+          ]
+        }
+      ],
+      "total": 0,
+      "limit": 0,
+      "offset": 0,
+      "errors": null
+    }
+  },
+  {
+    "standard": "Grafana Tempo",
+    "reader": "otel",
+    "expected": "agent.researcher{ model -> tool.fetch } -> model",
+    "input": {
+      "batches": [
+        {
+          "resource": {
+            "attributes": []
+          },
+          "scopeSpans": [
+            {
+              "scope": {
+                "name": "x"
+              },
+              "spans": [
+                {
+                  "traceId": "t",
+                  "spanId": "1",
+                  "name": "invoke_agent researcher",
+                  "startTimeUnixNano": "0",
+                  "endTimeUnixNano": "9",
+                  "attributes": [
+                    {
+                      "key": "gen_ai.operation.name",
+                      "value": {
+                        "stringValue": "invoke_agent"
+                      }
+                    },
+                    {
+                      "key": "gen_ai.agent.name",
+                      "value": {
+                        "stringValue": "researcher"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "traceId": "t",
+                  "spanId": "2",
+                  "parentSpanId": "1",
+                  "name": "chat",
+                  "startTimeUnixNano": "1",
+                  "endTimeUnixNano": "2",
+                  "attributes": [
+                    {
+                      "key": "gen_ai.operation.name",
+                      "value": {
+                        "stringValue": "chat"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "traceId": "t",
+                  "spanId": "3",
+                  "parentSpanId": "1",
+                  "name": "execute_tool fetch",
+                  "startTimeUnixNano": "3",
+                  "endTimeUnixNano": "4",
+                  "attributes": [
+                    {
+                      "key": "gen_ai.operation.name",
+                      "value": {
+                        "stringValue": "execute_tool"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "traceId": "t",
+                  "spanId": "4",
+                  "name": "chat",
+                  "startTimeUnixNano": "10",
+                  "endTimeUnixNano": "11",
+                  "attributes": [
+                    {
+                      "key": "gen_ai.operation.name",
+                      "value": {
+                        "stringValue": "chat"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "standard": "Langfuse API",
+    "reader": "langfuse",
+    "expected": "model -> tool.search! -> model",
+    "agent": "assistant",
+    "input": {
+      "id": "trace-1",
+      "name": "chat",
+      "observations": [
+        {
+          "id": "o1",
+          "traceId": "trace-1",
+          "type": "AGENT",
+          "name": "assistant",
+          "startTime": "2026-01-01T00:00:00Z",
+          "endTime": "2026-01-01T00:00:09Z",
+          "parentObservationId": null,
+          "level": "DEFAULT"
+        },
+        {
+          "id": "o2",
+          "traceId": "trace-1",
+          "type": "GENERATION",
+          "name": "gpt",
+          "startTime": "2026-01-01T00:00:01Z",
+          "endTime": "2026-01-01T00:00:02Z",
+          "parentObservationId": "o1",
+          "level": "DEFAULT"
+        },
+        {
+          "id": "o3",
+          "traceId": "trace-1",
+          "type": "TOOL",
+          "name": "search",
+          "startTime": "2026-01-01T00:00:03Z",
+          "endTime": "2026-01-01T00:00:04Z",
+          "parentObservationId": "o1",
+          "level": "ERROR",
+          "statusMessage": "rate limited"
+        },
+        {
+          "id": "o4",
+          "traceId": "trace-1",
+          "type": "SPAN",
+          "name": "format",
+          "startTime": "2026-01-01T00:00:05Z",
+          "endTime": "2026-01-01T00:00:05Z",
+          "parentObservationId": "o1",
+          "level": "DEFAULT"
+        },
+        {
+          "id": "o5",
+          "traceId": "trace-1",
+          "type": "GENERATION",
+          "name": "gpt",
+          "startTime": "2026-01-01T00:00:06Z",
+          "endTime": "2026-01-01T00:00:07Z",
+          "parentObservationId": "o1",
+          "level": "DEFAULT"
+        }
+      ]
+    }
+  },
+  {
+    "standard": "Codex CLI",
+    "reader": "codex",
+    "expected": "human -> model -> tool.shell! -> model -> tool.shell -> model -> tool.apply_patch -> model",
+    "input": [
+      {
+        "timestamp": "2026-01-01T00:00:00Z",
+        "type": "session_meta",
+        "payload": {
+          "id": "session-1",
+          "cwd": "/repo",
+          "originator": "codex_cli_rs",
+          "cli_version": "0.38.0"
+        }
+      },
+      {
+        "timestamp": "2026-01-01T00:00:00Z",
+        "type": "response_item",
+        "payload": {
+          "type": "message",
+          "role": "user",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "<environment_context>\n  <cwd>/repo</cwd>\n</environment_context>"
+            }
+          ]
+        }
+      },
+      {
+        "timestamp": "2026-01-01T00:00:01Z",
+        "type": "turn_context",
+        "payload": {
+          "model": "gpt-5"
+        }
+      },
+      {
+        "timestamp": "2026-01-01T00:00:01Z",
+        "type": "response_item",
+        "payload": {
+          "type": "message",
+          "role": "user",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Run the tests."
+            }
+          ]
+        }
+      },
+      {
+        "timestamp": "2026-01-01T00:00:01Z",
+        "type": "event_msg",
+        "payload": {
+          "type": "user_message",
+          "message": "Run the tests."
+        }
+      },
+      {
+        "timestamp": "2026-01-01T00:00:02Z",
+        "type": "response_item",
+        "payload": {
+          "type": "reasoning",
+          "summary": [],
+          "content": null,
+          "encrypted_content": "x"
+        }
+      },
+      {
+        "timestamp": "2026-01-01T00:00:02Z",
+        "type": "response_item",
+        "payload": {
+          "type": "function_call",
+          "name": "shell",
+          "arguments": "{\"command\":[\"pytest\"]}",
+          "call_id": "c1"
+        }
+      },
+      {
+        "timestamp": "2026-01-01T00:00:03Z",
+        "type": "response_item",
+        "payload": {
+          "type": "function_call_output",
+          "call_id": "c1",
+          "output": "{\"output\":\"1 failed\",\"metadata\":{\"exit_code\":1,\"duration_seconds\":0.5}}"
+        }
+      },
+      {
+        "timestamp": "2026-01-01T00:00:04Z",
+        "type": "response_item",
+        "payload": {
+          "type": "function_call",
+          "name": "shell",
+          "arguments": "{}",
+          "call_id": "c2"
+        }
+      },
+      {
+        "timestamp": "2026-01-01T00:00:05Z",
+        "type": "response_item",
+        "payload": {
+          "type": "function_call_output",
+          "call_id": "c2",
+          "output": "Exit code: 0\nWall time: 1 seconds\nOutput:\nok"
+        }
+      },
+      {
+        "timestamp": "2026-01-01T00:00:06Z",
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call",
+          "status": "completed",
+          "call_id": "c3",
+          "name": "apply_patch",
+          "input": "*** Begin Patch"
+        }
+      },
+      {
+        "timestamp": "2026-01-01T00:00:07Z",
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "call_id": "c3",
+          "output": "{\"output\":\"Success\",\"metadata\":{\"exit_code\":0}}"
+        }
+      },
+      {
+        "timestamp": "2026-01-01T00:00:08Z",
+        "type": "event_msg",
+        "payload": {
+          "type": "token_count",
+          "info": null
+        }
+      },
+      {
+        "timestamp": "2026-01-01T00:00:09Z",
+        "type": "response_item",
+        "payload": {
+          "type": "message",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "output_text",
+              "text": "Fixed."
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "standard": "Claude Code",
+    "reader": "claude_code",
+    "expected": "human -> model -> tool.Bash! || tool.Read -> model -> agent.Explore{ model -> tool.Grep -> model } -> model",
+    "input": [
+      {
+        "type": "summary",
+        "summary": "Tests",
+        "leafUuid": "u0"
+      },
+      {
+        "parentUuid": null,
+        "isSidechain": false,
+        "userType": "external",
+        "cwd": "/repo",
+        "sessionId": "session-1",
+        "version": "2.0.0",
+        "type": "user",
+        "message": {
+          "role": "user",
+          "content": "Why do the tests fail?"
+        },
+        "uuid": "u1",
+        "timestamp": "2026-01-01T00:00:00Z"
+      },
+      {
+        "parentUuid": null,
+        "isSidechain": false,
+        "userType": "external",
+        "cwd": "/repo",
+        "sessionId": "session-1",
+        "version": "2.0.0",
+        "type": "user",
+        "message": {
+          "role": "user",
+          "content": "<local-command-caveat>Caveat</local-command-caveat>"
+        },
+        "uuid": "u1m",
+        "timestamp": "2026-01-01T00:00:00Z",
+        "isMeta": true
+      },
+      {
+        "type": "attachment",
+        "sessionId": "session-1",
+        "attachment": {}
+      },
+      {
+        "parentUuid": null,
+        "isSidechain": false,
+        "userType": "external",
+        "cwd": "/repo",
+        "sessionId": "session-1",
+        "version": "2.0.0",
+        "type": "assistant",
+        "message": {
+          "id": "m1",
+          "type": "message",
+          "role": "assistant",
+          "model": "claude",
+          "content": [
+            {
+              "type": "thinking",
+              "thinking": "..."
+            }
+          ]
+        },
+        "uuid": "u2",
+        "timestamp": "2026-01-01T00:00:01Z"
+      },
+      {
+        "parentUuid": null,
+        "isSidechain": false,
+        "userType": "external",
+        "cwd": "/repo",
+        "sessionId": "session-1",
+        "version": "2.0.0",
+        "type": "assistant",
+        "message": {
+          "id": "m1",
+          "type": "message",
+          "role": "assistant",
+          "model": "claude",
+          "content": [
+            {
+              "type": "tool_use",
+              "id": "t1",
+              "name": "Read",
+              "input": {}
+            }
+          ]
+        },
+        "uuid": "u3",
+        "timestamp": "2026-01-01T00:00:01Z"
+      },
+      {
+        "parentUuid": null,
+        "isSidechain": false,
+        "userType": "external",
+        "cwd": "/repo",
+        "sessionId": "session-1",
+        "version": "2.0.0",
+        "type": "user",
+        "message": {
+          "role": "user",
+          "content": [
+            {
+              "tool_use_id": "t1",
+              "type": "tool_result",
+              "content": "..."
+            }
+          ]
+        },
+        "uuid": "u4",
+        "timestamp": "2026-01-01T00:00:02Z",
+        "toolUseResult": {
+          "type": "text"
+        }
+      },
+      {
+        "parentUuid": null,
+        "isSidechain": false,
+        "userType": "external",
+        "cwd": "/repo",
+        "sessionId": "session-1",
+        "version": "2.0.0",
+        "type": "assistant",
+        "message": {
+          "id": "m1",
+          "type": "message",
+          "role": "assistant",
+          "model": "claude",
+          "content": [
+            {
+              "type": "tool_use",
+              "id": "t2",
+              "name": "Bash",
+              "input": {}
+            }
+          ]
+        },
+        "uuid": "u5",
+        "timestamp": "2026-01-01T00:00:02Z"
+      },
+      {
+        "parentUuid": null,
+        "isSidechain": false,
+        "userType": "external",
+        "cwd": "/repo",
+        "sessionId": "session-1",
+        "version": "2.0.0",
+        "type": "user",
+        "message": {
+          "role": "user",
+          "content": [
+            {
+              "tool_use_id": "t2",
+              "type": "tool_result",
+              "content": "...",
+              "is_error": true
+            }
+          ]
+        },
+        "uuid": "u6",
+        "timestamp": "2026-01-01T00:00:03Z",
+        "toolUseResult": "Error: exit 1"
+      },
+      {
+        "type": "api-request-blob",
+        "sessionId": "session-1",
+        "message": {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "duplicate"
+            }
+          ]
+        }
+      },
+      {
+        "parentUuid": null,
+        "isSidechain": false,
+        "userType": "external",
+        "cwd": "/repo",
+        "sessionId": "session-1",
+        "version": "2.0.0",
+        "type": "assistant",
+        "message": {
+          "id": "m2",
+          "type": "message",
+          "role": "assistant",
+          "model": "claude",
+          "content": [
+            {
+              "type": "tool_use",
+              "id": "t3",
+              "name": "Task",
+              "input": {
+                "subagent_type": "Explore",
+                "prompt": "Find the fixture."
+              }
+            }
+          ]
+        },
+        "uuid": "u7",
+        "timestamp": "2026-01-01T00:00:04Z"
+      },
+      {
+        "parentUuid": null,
+        "isSidechain": true,
+        "userType": "external",
+        "cwd": "/repo",
+        "sessionId": "session-1",
+        "version": "2.0.0",
+        "type": "user",
+        "message": {
+          "role": "user",
+          "content": "Find the fixture."
+        },
+        "uuid": "s1",
+        "timestamp": "2026-01-01T00:00:04Z",
+        "agentId": "a1"
+      },
+      {
+        "parentUuid": null,
+        "isSidechain": true,
+        "userType": "external",
+        "cwd": "/repo",
+        "sessionId": "session-1",
+        "version": "2.0.0",
+        "type": "assistant",
+        "message": {
+          "id": "n1",
+          "type": "message",
+          "role": "assistant",
+          "model": "claude",
+          "content": [
+            {
+              "type": "tool_use",
+              "id": "g1",
+              "name": "Grep",
+              "input": {}
+            }
+          ]
+        },
+        "uuid": "s2",
+        "timestamp": "2026-01-01T00:00:05Z",
+        "agentId": "a1"
+      },
+      {
+        "parentUuid": null,
+        "isSidechain": true,
+        "userType": "external",
+        "cwd": "/repo",
+        "sessionId": "session-1",
+        "version": "2.0.0",
+        "type": "user",
+        "message": {
+          "role": "user",
+          "content": [
+            {
+              "tool_use_id": "g1",
+              "type": "tool_result",
+              "content": "..."
+            }
+          ]
+        },
+        "uuid": "s3",
+        "timestamp": "2026-01-01T00:00:06Z",
+        "agentId": "a1"
+      },
+      {
+        "parentUuid": null,
+        "isSidechain": true,
+        "userType": "external",
+        "cwd": "/repo",
+        "sessionId": "session-1",
+        "version": "2.0.0",
+        "type": "assistant",
+        "message": {
+          "id": "n2",
+          "type": "message",
+          "role": "assistant",
+          "model": "claude",
+          "content": [
+            {
+              "type": "text",
+              "text": "In conftest.py."
+            }
+          ]
+        },
+        "uuid": "s4",
+        "timestamp": "2026-01-01T00:00:07Z",
+        "agentId": "a1"
+      },
+      {
+        "parentUuid": null,
+        "isSidechain": false,
+        "userType": "external",
+        "cwd": "/repo",
+        "sessionId": "session-1",
+        "version": "2.0.0",
+        "type": "user",
+        "message": {
+          "role": "user",
+          "content": [
+            {
+              "tool_use_id": "t3",
+              "type": "tool_result",
+              "content": "..."
+            }
+          ]
+        },
+        "uuid": "u8",
+        "timestamp": "2026-01-01T00:00:08Z",
+        "toolUseResult": {
+          "status": "completed",
+          "agentId": "a1",
+          "content": []
+        }
+      },
+      {
+        "parentUuid": null,
+        "isSidechain": false,
+        "userType": "external",
+        "cwd": "/repo",
+        "sessionId": "session-1",
+        "version": "2.0.0",
+        "type": "assistant",
+        "message": {
+          "id": "m3",
+          "type": "message",
+          "role": "assistant",
+          "model": "claude",
+          "content": [
+            {
+              "type": "text",
+              "text": "A fixture is missing."
+            }
+          ]
+        },
+        "uuid": "u9",
+        "timestamp": "2026-01-01T00:00:09Z"
+      }
+    ]
+  },
+  {
+    "standard": "Inspect AI",
+    "reader": "messages",
+    "expected": "human -> model -> tool.bash! -> model",
+    "input": {
+      "version": 2,
+      "status": "success",
+      "eval": {
+        "task": "ctf",
+        "model": "openai/gpt-4o"
+      },
+      "samples": [
+        {
+          "id": "s1",
+          "epoch": 1,
+          "input": "Find the flag.",
+          "target": "x",
+          "messages": [
+            {
+              "id": "m0",
+              "role": "system",
+              "content": "You are a hacker."
+            },
+            {
+              "id": "m1",
+              "role": "user",
+              "content": "Find the flag.",
+              "source": "input"
+            },
+            {
+              "id": "m2",
+              "role": "assistant",
+              "content": "",
+              "source": "generate",
+              "tool_calls": [
+                {
+                  "id": "call_1",
+                  "function": "bash",
+                  "arguments": {
+                    "cmd": "ls"
+                  },
+                  "type": "function"
+                }
+              ]
+            },
+            {
+              "id": "m3",
+              "role": "tool",
+              "content": "",
+              "tool_call_id": "call_1",
+              "function": "bash",
+              "error": {
+                "type": "timeout",
+                "message": "Command timed out"
+              }
+            },
+            {
+              "id": "m4",
+              "role": "assistant",
+              "content": "Gave up.",
+              "source": "generate"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "standard": "Pydantic AI",
+    "reader": "messages",
+    "expected": "human -> model -> tool.roll_die! -> model -> tool.roll_die -> model",
+    "input": [
+      {
+        "kind": "request",
+        "parts": [
+          {
+            "part_kind": "system-prompt",
+            "content": "Play."
+          },
+          {
+            "part_kind": "user-prompt",
+            "content": "Roll.",
+            "timestamp": "2026-01-01T00:00:00Z"
+          }
+        ]
+      },
+      {
+        "kind": "response",
+        "parts": [
+          {
+            "part_kind": "tool-call",
+            "tool_name": "roll_die",
+            "args": "{}",
+            "tool_call_id": "c1"
+          }
+        ],
+        "model_name": "gpt",
+        "timestamp": "2026-01-01T00:00:01Z"
+      },
+      {
+        "kind": "request",
+        "parts": [
+          {
+            "part_kind": "retry-prompt",
+            "content": "bad args",
+            "tool_name": "roll_die",
+            "tool_call_id": "c1",
+            "timestamp": "2026-01-01T00:00:02Z"
+          }
+        ]
+      },
+      {
+        "kind": "response",
+        "parts": [
+          {
+            "part_kind": "tool-call",
+            "tool_name": "roll_die",
+            "args": "{}",
+            "tool_call_id": "c2"
+          }
+        ],
+        "timestamp": "2026-01-01T00:00:03Z"
+      },
+      {
+        "kind": "request",
+        "parts": [
+          {
+            "part_kind": "tool-return",
+            "tool_name": "roll_die",
+            "content": "4",
+            "tool_call_id": "c2",
+            "timestamp": "2026-01-01T00:00:04Z"
+          }
+        ]
+      },
+      {
+        "kind": "response",
+        "parts": [
+          {
+            "part_kind": "text",
+            "content": "You rolled 4."
+          }
+        ],
+        "timestamp": "2026-01-01T00:00:05Z"
+      }
+    ]
+  },
+  {
+    "standard": "LangChain",
+    "reader": "messages",
+    "expected": "human -> model -> tool.search! -> model",
+    "input": [
+      {
+        "type": "system",
+        "data": {
+          "content": "Be brief.",
+          "type": "system"
+        }
+      },
+      {
+        "type": "human",
+        "data": {
+          "content": "Find it.",
+          "type": "human"
+        }
+      },
+      {
+        "type": "ai",
+        "data": {
+          "content": "",
+          "type": "ai",
+          "tool_calls": [
+            {
+              "name": "search",
+              "args": {},
+              "id": "c1",
+              "type": "tool_call"
+            }
+          ]
+        }
+      },
+      {
+        "type": "tool",
+        "data": {
+          "content": "rate limited",
+          "type": "tool",
+          "tool_call_id": "c1",
+          "status": "error"
+        }
+      },
+      {
+        "type": "ai",
+        "data": {
+          "content": "Could not.",
+          "type": "ai"
+        }
+      }
+    ]
+  },
+  {
+    "standard": "LangChain (serialized)",
+    "reader": "messages",
+    "expected": "human -> model -> tool.lookup -> model",
+    "input": [
+      {
+        "lc": 1,
+        "type": "constructor",
+        "id": ["langchain", "schema", "messages", "HumanMessage"],
+        "kwargs": {
+          "content": "Look it up."
+        }
+      },
+      {
+        "lc": 1,
+        "type": "constructor",
+        "id": ["langchain", "schema", "messages", "AIMessageChunk"],
+        "kwargs": {
+          "content": "",
+          "tool_calls": [
+            {
+              "name": "lookup",
+              "args": {},
+              "id": "c1"
+            }
+          ]
+        }
+      },
+      {
+        "lc": 1,
+        "type": "constructor",
+        "id": ["langchain", "schema", "messages", "ToolMessage"],
+        "kwargs": {
+          "content": "found",
+          "tool_call_id": "c1"
+        }
+      },
+      {
+        "lc": 1,
+        "type": "constructor",
+        "id": ["langchain", "schema", "messages", "AIMessage"],
+        "kwargs": {
+          "content": "Found."
+        }
+      }
+    ]
+  },
+  {
+    "standard": "Amazon Bedrock Converse",
+    "reader": "messages",
+    "expected": "human -> model -> tool.top_song! -> model",
+    "input": {
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "text": "Most popular song on WZPZ?"
+            }
+          ]
+        },
+        {
+          "role": "assistant",
+          "content": [
+            {
+              "text": "Checking."
+            },
+            {
+              "toolUse": {
+                "toolUseId": "t1",
+                "name": "top_song",
+                "input": {
+                  "sign": "WZPZ"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "toolResult": {
+                "toolUseId": "t1",
+                "content": [
+                  {
+                    "text": "unknown station"
+                  }
+                ],
+                "status": "error"
+              }
+            }
+          ]
+        },
+        {
+          "role": "assistant",
+          "content": [
+            {
+              "text": "Unknown station."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "standard": "ShareGPT",
+    "reader": "messages",
+    "expected": "human -> model -> tool.get_weather -> model",
+    "input": {
+      "id": "x1",
+      "conversations": [
+        {
+          "from": "system",
+          "value": "You can call tools."
+        },
+        {
+          "from": "human",
+          "value": "Weather in Delft?"
+        },
+        {
+          "from": "function_call",
+          "value": "{\"name\": \"get_weather\", \"arguments\": {\"city\": \"Delft\"}}"
+        },
+        {
+          "from": "observation",
+          "value": "{\"weather\": \"rain\"}"
+        },
+        {
+          "from": "gpt",
+          "value": "Rain."
+        }
+      ]
+    }
+  },
+  {
+    "standard": "Google ADK",
+    "reader": "messages",
+    "expected": "human -> model -> tool.get_weather! -> model",
+    "input": {
+      "id": "session-1",
+      "appName": "weather",
+      "userId": "u",
+      "events": [
+        {
+          "id": "e1",
+          "invocationId": "i1",
+          "author": "user",
+          "timestamp": 1767225600.0,
+          "content": {
+            "role": "user",
+            "parts": [
+              {
+                "text": "Weather?"
+              }
+            ]
+          }
+        },
+        {
+          "id": "e2",
+          "invocationId": "i1",
+          "author": "weather_agent",
+          "timestamp": 1767225601.0,
+          "content": {
+            "role": "model",
+            "parts": [
+              {
+                "functionCall": {
+                  "id": "f1",
+                  "name": "get_weather",
+                  "args": {}
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "e3",
+          "invocationId": "i1",
+          "author": "weather_agent",
+          "timestamp": 1767225602.0,
+          "content": {
+            "role": "user",
+            "parts": [
+              {
+                "functionResponse": {
+                  "id": "f1",
+                  "name": "get_weather",
+                  "response": {
+                    "error": "no data"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "e4",
+          "invocationId": "i1",
+          "author": "weather_agent",
+          "timestamp": 1767225603.0,
+          "content": {
+            "role": "model",
+            "parts": [
+              {
+                "text": "No data."
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "standard": "ATIF: subagents and code steps",
+    "reader": "atif",
+    "expected": "human -> model -> agent.delegate{ model -> tool.grep! } -> code",
+    "agent": "lead",
+    "input": {
+      "schema_version": "ATIF-v1.8",
+      "trajectory_id": "main",
+      "agent": {
+        "name": "lead",
+        "version": "1"
+      },
+      "steps": [
+        {
+          "step_id": 1,
+          "timestamp": "2026-01-01T00:00:00Z",
+          "source": "user",
+          "message": "Find it."
+        },
+        {
+          "step_id": 2,
+          "timestamp": "2026-01-01T00:00:01Z",
+          "source": "agent",
+          "message": "",
+          "tool_calls": [
+            {
+              "tool_call_id": "c1",
+              "function_name": "delegate",
+              "arguments": {}
+            }
+          ],
+          "observation": {
+            "results": [
+              {
+                "source_call_id": "c1",
+                "content": "done",
+                "subagent_trajectory_ref": {
+                  "trajectory_id": "sub"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "step_id": 3,
+          "timestamp": "2026-01-01T00:00:02Z",
+          "source": "agent",
+          "message": "Summary.",
+          "llm_call_count": 0
+        }
+      ],
+      "subagent_trajectories": [
+        {
+          "schema_version": "ATIF-v1.8",
+          "trajectory_id": "sub",
+          "agent": {
+            "name": "searcher",
+            "version": "1"
+          },
+          "steps": [
+            {
+              "step_id": 1,
+              "source": "agent",
+              "message": "",
+              "tool_calls": [
+                {
+                  "tool_call_id": "g",
+                  "function_name": "grep",
+                  "arguments": {}
+                }
+              ],
+              "observation": {
+                "results": [
+                  {
+                    "source_call_id": "g",
+                    "content": "no match",
+                    "extra": {
+                      "is_error": true
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "standard": "SWE-agent",
+    "reader": "swe_agent",
+    "expected": "model -> tool.find_file -> model -> tool.open -> model -> tool.edit -> model -> tool.submit",
+    "input": {
+      "environment": "swe_main",
+      "trajectory": [
+        {
+          "action": "find_file utils.py\n",
+          "observation": "Found 1 match",
+          "response": "",
+          "thought": "Find it.",
+          "execution_time": 0.1,
+          "state": {},
+          "query": [],
+          "extra_info": {}
+        },
+        {
+          "action": "open utils.py",
+          "observation": "...",
+          "response": "",
+          "thought": "",
+          "execution_time": 0.1,
+          "state": {},
+          "query": [],
+          "extra_info": {}
+        },
+        {
+          "action": "edit 1:2\nfix\nend_of_edit",
+          "observation": "...",
+          "response": "",
+          "thought": "",
+          "execution_time": 0.1,
+          "state": {},
+          "query": [],
+          "extra_info": {}
+        },
+        {
+          "action": "submit",
+          "observation": "diff",
+          "response": "",
+          "thought": "",
+          "execution_time": 0.1,
+          "state": {},
+          "query": [],
+          "extra_info": {}
+        }
+      ],
+      "history": [],
+      "info": {
+        "exit_status": "submitted"
+      }
+    }
+  },
+  {
+    "standard": "mini-SWE-agent",
+    "reader": "swe_agent",
+    "expected": "model -> tool.bash -> model -> tool.bash! -> model -> tool.bash",
+    "input": {
+      "trajectory_format": "mini-swe-agent-1",
+      "info": {
+        "exit_status": "Submitted"
+      },
+      "messages": [
+        {
+          "role": "system",
+          "content": "You are a helpful assistant."
+        },
+        {
+          "role": "user",
+          "content": "Fix the bug."
+        },
+        {
+          "role": "assistant",
+          "content": "THOUGHT: look.\n\n```bash\nls\n```"
+        },
+        {
+          "role": "user",
+          "content": "<returncode>0</returncode>\n<output>src</output>"
+        },
+        {
+          "role": "assistant",
+          "content": "THOUGHT: test.\n\n```bash\npytest\n```"
+        },
+        {
+          "role": "user",
+          "content": "<returncode>1</returncode>\n<output>1 failed</output>"
+        },
+        {
+          "role": "assistant",
+          "content": "```bash\necho COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT\n```"
+        }
+      ]
+    }
+  },
+  {
+    "standard": "OpenHands",
+    "reader": "openhands",
+    "expected": "human -> model -> tool.read || tool.run! -> model -> agent.BrowsingAgent -> model",
+    "input": [
+      {
+        "id": 0,
+        "timestamp": "2026-01-01T00:00:00Z",
+        "source": "agent",
+        "message": "",
+        "action": "system",
+        "args": {
+          "content": "You are OpenHands."
+        }
+      },
+      {
+        "id": 1,
+        "timestamp": "2026-01-01T00:00:01Z",
+        "source": "user",
+        "message": "Fix the bug.",
+        "action": "message",
+        "args": {
+          "content": "Fix the bug."
+        }
+      },
+      {
+        "id": 2,
+        "timestamp": "2026-01-01T00:00:01Z",
+        "source": "environment",
+        "message": "",
+        "action": "recall",
+        "args": {}
+      },
+      {
+        "id": 3,
+        "timestamp": "2026-01-01T00:00:02Z",
+        "source": "agent",
+        "message": "Running",
+        "action": "run",
+        "args": {
+          "command": "pytest"
+        },
+        "tool_call_metadata": {
+          "function_name": "x",
+          "tool_call_id": "y",
+          "model_response": {
+            "id": "r1"
+          },
+          "total_calls_in_response": 2
+        }
+      },
+      {
+        "id": 4,
+        "timestamp": "2026-01-01T00:00:02Z",
+        "source": "agent",
+        "message": "Reading",
+        "action": "read",
+        "args": {
+          "path": "a.py"
+        },
+        "tool_call_metadata": {
+          "function_name": "x",
+          "tool_call_id": "y",
+          "model_response": {
+            "id": "r1"
+          },
+          "total_calls_in_response": 2
+        }
+      },
+      {
+        "id": 5,
+        "timestamp": "2026-01-01T00:00:03Z",
+        "source": "agent",
+        "message": "",
+        "observation": "run",
+        "content": "1 failed",
+        "cause": 3,
+        "extras": {
+          "command": "pytest",
+          "metadata": {
+            "exit_code": 1
+          }
+        }
+      },
+      {
+        "id": 6,
+        "timestamp": "2026-01-01T00:00:03Z",
+        "source": "agent",
+        "message": "",
+        "observation": "read",
+        "content": "exit code 1 appears in this file",
+        "cause": 4,
+        "extras": {
+          "path": "a.py"
+        }
+      },
+      {
+        "id": 7,
+        "timestamp": "2026-01-01T00:00:04Z",
+        "source": "agent",
+        "message": "",
+        "action": "delegate",
+        "args": {
+          "agent": "BrowsingAgent",
+          "inputs": {}
+        },
+        "tool_call_metadata": {
+          "function_name": "x",
+          "tool_call_id": "y",
+          "model_response": {
+            "id": "r2"
+          },
+          "total_calls_in_response": 2
+        }
+      },
+      {
+        "id": 8,
+        "timestamp": "2026-01-01T00:00:05Z",
+        "source": "agent",
+        "message": "",
+        "observation": "delegate",
+        "content": "ok",
+        "cause": 7,
+        "extras": {}
+      },
+      {
+        "id": 9,
+        "timestamp": "2026-01-01T00:00:06Z",
+        "source": "agent",
+        "message": "Done",
+        "action": "finish",
+        "args": {},
+        "tool_call_metadata": {
+          "function_name": "x",
+          "tool_call_id": "y",
+          "model_response": {
+            "id": "r3"
+          },
+          "total_calls_in_response": 2
+        }
+      },
+      {
+        "id": 10,
+        "timestamp": "2026-01-01T00:00:06Z",
+        "source": "environment",
+        "message": "",
+        "observation": "agent_state_changed",
+        "content": "",
+        "extras": {
+          "agent_state": "finished"
+        }
+      }
+    ]
+  }
+]

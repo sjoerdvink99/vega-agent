@@ -1,0 +1,636 @@
+{
+  "valid": [
+    {
+      "name": "event log with an actor vocabulary",
+      "trace": {
+        "run": "session",
+        "actor": {
+          "field": "kind",
+          "map": {
+            "tool_call": "tool",
+            "noise": null
+          }
+        },
+        "name": "tool",
+        "start": "t",
+        "failed": "error"
+      },
+      "input": [
+        {
+          "session": "s1",
+          "kind": "LLM",
+          "t": 0
+        },
+        {
+          "session": "s1",
+          "kind": "tool_call",
+          "tool": "search",
+          "t": 1
+        },
+        {
+          "session": "s1",
+          "kind": "noise",
+          "t": 1.5
+        },
+        {
+          "session": "s1",
+          "kind": "LLM",
+          "t": 2
+        },
+        {
+          "session": "s2",
+          "kind": "llm",
+          "t": 0
+        },
+        {
+          "session": "s2",
+          "kind": "tool_call",
+          "tool": "fetch",
+          "t": 1,
+          "error": "timeout"
+        },
+        {
+          "session": "s2",
+          "kind": "unknown",
+          "t": 2
+        },
+        {
+          "session": "s2",
+          "kind": "chat",
+          "t": 3
+        },
+        {
+          "session": "s2",
+          "t": 4
+        }
+      ],
+      "expected": [
+        {
+          "id": "s1",
+          "process": "model -> tool.search -> model",
+          "time": [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              2,
+              2
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "process": "model -> tool.fetch! -> model"
+        }
+      ]
+    },
+    {
+      "name": "nested spans with units, overlap, failure, agent and groups",
+      "trace": {
+        "run": "trace",
+        "step": "id",
+        "parent": "parent",
+        "actor": "type",
+        "name": "name",
+        "start": {
+          "field": "start_ms",
+          "unit": "ms"
+        },
+        "end": {
+          "field": "end_ms",
+          "unit": "ms"
+        },
+        "failed": {
+          "field": "status",
+          "equal": "error"
+        },
+        "group": "model"
+      },
+      "input": [
+        {
+          "trace": "a",
+          "id": "1",
+          "type": "invoke_agent",
+          "name": "coder",
+          "start_ms": 0,
+          "end_ms": 900,
+          "model": "gpt"
+        },
+        {
+          "trace": "a",
+          "id": "2",
+          "parent": "1",
+          "type": "chat",
+          "start_ms": 0,
+          "end_ms": 300
+        },
+        {
+          "trace": "a",
+          "id": "3",
+          "parent": "1",
+          "type": "execute_tool",
+          "name": "edit",
+          "status": "error",
+          "start_ms": 300,
+          "end_ms": 500
+        },
+        {
+          "trace": "a",
+          "id": "4",
+          "parent": "1",
+          "type": "execute_tool",
+          "name": "test",
+          "start_ms": 320,
+          "end_ms": 600
+        },
+        {
+          "trace": "a",
+          "id": "5",
+          "parent": "1",
+          "type": "chat",
+          "start_ms": 600,
+          "end_ms": 900
+        },
+        {
+          "trace": "b",
+          "id": "6",
+          "type": "chat",
+          "start_ms": 0,
+          "end_ms": 200,
+          "model": "claude"
+        },
+        {
+          "trace": "b",
+          "id": "7",
+          "type": "execute_tool",
+          "name": "edit",
+          "status": "ok",
+          "start_ms": 200,
+          "end_ms": 400
+        },
+        {
+          "trace": "c",
+          "id": "8",
+          "type": "chat",
+          "start_ms": 0,
+          "end_ms": 200
+        }
+      ],
+      "expected": [
+        {
+          "id": "a",
+          "process": "model -> tool.edit! || tool.test -> model",
+          "group": "gpt",
+          "agent": "coder",
+          "time": [
+            [
+              0,
+              0.3
+            ],
+            [
+              0.3,
+              0.5
+            ],
+            [
+              0.32,
+              0.6
+            ],
+            [
+              0.6,
+              0.9
+            ]
+          ]
+        },
+        {
+          "id": "b",
+          "process": "model -> tool.edit",
+          "group": "claude"
+        }
+      ]
+    },
+    {
+      "name": "sub-agents nest under their parent step",
+      "trace": {
+        "step": "id",
+        "parent": "parent",
+        "actor": "kind",
+        "name": "name"
+      },
+      "input": [
+        {
+          "id": "1",
+          "kind": "model",
+          "name": "plan"
+        },
+        {
+          "id": "2",
+          "kind": "agent",
+          "name": "worker"
+        },
+        {
+          "id": "3",
+          "parent": "2",
+          "kind": "model"
+        },
+        {
+          "id": "4",
+          "parent": "2",
+          "kind": "tool.search"
+        },
+        {
+          "id": "5",
+          "kind": "human",
+          "name": "approve"
+        }
+      ],
+      "expected": [
+        {
+          "id": "0",
+          "process": "model.plan -> agent.worker{ model -> tool.search } -> human.approve"
+        }
+      ]
+    },
+    {
+      "name": "dotted fields reach into nested objects and keep dotted keys",
+      "trace": {
+        "run": "run.id",
+        "actor": "attributes.gen_ai.operation.name",
+        "name": "attributes.gen_ai.tool.name",
+        "failed": "result.error"
+      },
+      "input": [
+        {
+          "run": {
+            "id": 7
+          },
+          "attributes": {
+            "gen_ai.operation.name": "chat"
+          }
+        },
+        {
+          "run": {
+            "id": 7
+          },
+          "attributes": {
+            "gen_ai.operation.name": "execute_tool",
+            "gen_ai.tool.name": "read file"
+          },
+          "result": {
+            "error": true
+          }
+        },
+        {
+          "run": {
+            "id": 7
+          },
+          "attributes": {
+            "gen_ai.operation.name": "retrieval"
+          }
+        }
+      ],
+      "expected": [
+        {
+          "id": "7",
+          "process": "model -> tool.read_file! -> tool.retrieve"
+        }
+      ]
+    },
+    {
+      "name": "a standard partitioned into groups",
+      "trace": {
+        "group": "variant"
+      },
+      "input": [
+        {
+          "traceId": "t1",
+          "spanId": "1",
+          "variant": "before",
+          "attributes": {
+            "gen_ai.operation.name": "chat"
+          },
+          "startTimeUnixNano": "0",
+          "endTimeUnixNano": "1000000000"
+        },
+        {
+          "traceId": "t1",
+          "spanId": "2",
+          "variant": "before",
+          "attributes": {
+            "gen_ai.operation.name": "execute_tool",
+            "gen_ai.tool.name": "search"
+          },
+          "startTimeUnixNano": "1000000000",
+          "endTimeUnixNano": "2000000000"
+        },
+        {
+          "traceId": "t2",
+          "spanId": "3",
+          "variant": true,
+          "attributes": {
+            "gen_ai.operation.name": "chat"
+          }
+        },
+        {
+          "traceId": "t3",
+          "spanId": "4",
+          "attributes": {
+            "gen_ai.operation.name": "chat"
+          }
+        }
+      ],
+      "expected": [
+        {
+          "id": "t1",
+          "process": "model -> tool.search",
+          "group": "before",
+          "time": [
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              2
+            ]
+          ]
+        },
+        {
+          "id": "t2",
+          "process": "model",
+          "group": "true"
+        }
+      ]
+    },
+    {
+      "name": "runs written as expressions",
+      "trace": {
+        "group": "arm"
+      },
+      "input": [
+        "model",
+        {
+          "process": "model -> tool! -> model",
+          "arm": "a",
+          "id": "x",
+          "time": [
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              2
+            ],
+            [
+              2,
+              3
+            ]
+          ]
+        },
+        {
+          "process": "tool",
+          "arm": 2
+        },
+        {
+          "process": "model*",
+          "arm": "a"
+        },
+        {
+          "process": "tool -> model",
+          "arm": "a",
+          "time": [
+            [
+              0,
+              1
+            ]
+          ]
+        }
+      ],
+      "expected": [
+        {
+          "id": "x",
+          "process": "model -> tool! -> model",
+          "group": "a",
+          "time": [
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              2
+            ],
+            [
+              2,
+              3
+            ]
+          ]
+        },
+        {
+          "id": "1",
+          "process": "tool -> model",
+          "group": "a",
+          "time": [
+            null,
+            null
+          ]
+        },
+        {
+          "id": "2",
+          "process": "tool",
+          "group": "2"
+        }
+      ]
+    },
+    {
+      "name": "groups in a given order",
+      "trace": {
+        "run": "session",
+        "actor": "type",
+        "group": {
+          "field": "arm",
+          "order": [
+            "b",
+            "a"
+          ]
+        }
+      },
+      "input": [
+        {
+          "session": "1",
+          "type": "llm",
+          "arm": "a"
+        },
+        {
+          "session": "2",
+          "type": "llm",
+          "arm": "b"
+        },
+        {
+          "session": "3",
+          "type": "tool"
+        }
+      ],
+      "expected": [
+        {
+          "id": "1",
+          "process": "model",
+          "group": "a"
+        },
+        {
+          "id": "2",
+          "process": "model",
+          "group": "b"
+        }
+      ]
+    }
+  ],
+  "invalid": [
+    {
+      "trace": "session",
+      "reason": "a mapping is an object"
+    },
+    {
+      "trace": {
+        "colour": "kind"
+      },
+      "reason": "unknown channel"
+    },
+    {
+      "trace": {
+        "run": "session"
+      },
+      "reason": "a step channel needs actor"
+    },
+    {
+      "trace": {
+        "actor": ""
+      },
+      "reason": "an empty field name"
+    },
+    {
+      "trace": {
+        "actor": 3
+      },
+      "reason": "a field is a string"
+    },
+    {
+      "trace": {
+        "actor": {
+          "field": "kind",
+          "map": {
+            "llm": "robot"
+          }
+        }
+      },
+      "reason": "an unknown actor"
+    },
+    {
+      "trace": {
+        "actor": {
+          "field": "kind",
+          "map": [
+            "model"
+          ]
+        }
+      },
+      "reason": "a map is an object"
+    },
+    {
+      "trace": {
+        "actor": {
+          "field": "kind",
+          "scale": {}
+        }
+      },
+      "reason": "an unknown channel option"
+    },
+    {
+      "trace": {
+        "actor": "kind",
+        "failed": {
+          "field": "status"
+        }
+      },
+      "reason": "failed needs equal"
+    },
+    {
+      "trace": {
+        "actor": "kind",
+        "failed": {
+          "field": "status",
+          "equal": [
+            1
+          ]
+        }
+      },
+      "reason": "equal is a value"
+    },
+    {
+      "trace": {
+        "actor": "kind",
+        "start": {
+          "field": "t",
+          "unit": "minutes"
+        }
+      },
+      "reason": "an unknown unit"
+    },
+    {
+      "trace": {
+        "actor": "kind",
+        "end": {
+          "unit": "ms"
+        }
+      },
+      "reason": "a channel object needs a field"
+    },
+    {
+      "trace": {
+        "group": {
+          "field": "arm",
+          "order": []
+        }
+      },
+      "reason": "an empty group order"
+    },
+    {
+      "trace": {
+        "group": {
+          "field": "arm",
+          "order": [
+            "a",
+            "b",
+            "c"
+          ]
+        }
+      },
+      "reason": "a group order of three"
+    },
+    {
+      "trace": {
+        "group": {
+          "field": "arm",
+          "order": [
+            "a",
+            "a"
+          ]
+        }
+      },
+      "reason": "a repeated group"
+    },
+    {
+      "trace": {
+        "group": {
+          "field": "arm"
+        }
+      },
+      "reason": "a group object needs an order"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+name: Feature
+description: A new mark, view property, reader or export.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: need
+    attributes:
+      label: What do you want to see or do?
+      description: Show the trace or spec, and what the result should look like.
+    validations:
+      required: true
+  - type: textarea
+    id: standard
+    attributes:
+      label: Standard or prior art
+      description: For a reader or export, link the format and attach a real-shaped record.

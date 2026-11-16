@@ -1,0 +1,23 @@
+name: Bug
+description: Something renders wrong, crashes, or disagrees between Python and TypeScript.
+labels: [bug]
+body:
+  - type: textarea
+    id: input
+    attributes:
+      label: Input
+      description: The smallest expression, spec or record that shows the problem.
+      render: json
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected and actual
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version and environment
+      placeholder: vega-agent 0.1.0, Chrome 130 / vega-agent 0.1.0, Python 3.12

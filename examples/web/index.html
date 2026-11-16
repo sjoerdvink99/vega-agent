@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>vega-agent in a web page</title>
+    <style>
+      body { margin: 32px; font: 14px system-ui, sans-serif; color: #1c2027; }
+      section { margin-bottom: 40px; }
+      output { font: 12px ui-monospace, monospace; color: #6a7280; }
+    </style>
+  </head>
+  <body>
+    <section id="spec"></section>
+    <section id="runs"></section>
+    <output id="selection">click a step to select its runs</output>
+
+    <script src="../../js/dist/vega-agent.min.js"></script>
+    <script type="module">
+      const { embed, find } = vegaAgent;
+
+      await embed(document.getElementById("spec"), {
+        mark: "diagram",
+        title: "Harness",
+        process: "model.plan(=> task:text[]) -> agent.worker{ (model -> tool[])* -> model }[] -> model.synthesize",
+      });
+
+      const runs = new Map(
+        [
+          "model -> tool.search -> model -> tool.fetch -> model",
+          "model -> tool.search || tool.fetch -> model",
+          "model -> tool.search! -> model -> tool.search -> model -> tool.fetch -> model",
+          "model -> tool.search -> model",
+        ].map((process, index) => [`run-${index}`, process]),
+      );
+
+      const view = await embed(document.getElementById("runs"), {
+        mark: "icicle",
+        title: "Runs",
+        width: "container",
+        level: "names",
+        highlight: "tool.search! -> model -> tool.search",
+        params: [{ name: "picked", select: "click" }],
+        data: { values: [...runs].map(([id, process]) => ({ id, process })) },
+      });
+
+      view.on("select", ({ picked: ids }) => {
+        const retried = ids.filter((id) => find(runs.get(id), "tool! -> model -> tool").length);
+        document.getElementById("selection").textContent = `${ids.length} runs selected · ${retried.length} retried after a failure`;
+      });
+    </script>
+  </body>
+</html>

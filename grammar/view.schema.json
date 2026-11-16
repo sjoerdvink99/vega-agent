@@ -1,0 +1,1781 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/Spec",
+  "definitions": {
+    "Spec": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/UnitSpec"
+        },
+        {
+          "$ref": "#/definitions/VConcatSpec"
+        },
+        {
+          "$ref": "#/definitions/HConcatSpec"
+        },
+        {
+          "$ref": "#/definitions/FacetSpec"
+        }
+      ]
+    },
+    "UnitSpec": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/DiagramSpec"
+        },
+        {
+          "$ref": "#/definitions/TimelineSpec"
+        },
+        {
+          "$ref": "#/definitions/HandoffsSpec"
+        },
+        {
+          "$ref": "#/definitions/IcicleSpec"
+        },
+        {
+          "$ref": "#/definitions/VariantsSpec"
+        },
+        {
+          "$ref": "#/definitions/TransitionsSpec"
+        },
+        {
+          "$ref": "#/definitions/GraphSpec"
+        },
+        {
+          "$ref": "#/definitions/SankeySpec"
+        },
+        {
+          "$ref": "#/definitions/ActivitiesSpec"
+        },
+        {
+          "$ref": "#/definitions/SequencesSpec"
+        },
+        {
+          "$ref": "#/definitions/DistributionSpec"
+        },
+        {
+          "$ref": "#/definitions/DurationsSpec"
+        },
+        {
+          "$ref": "#/definitions/ProjectionSpec"
+        }
+      ]
+    },
+    "DiagramSpec": {
+      "type": "object",
+      "properties": {
+        "$schema": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "width": {
+          "$ref": "#/definitions/Width"
+        },
+        "legend": {
+          "type": "boolean"
+        },
+        "config": {
+          "$ref": "#/definitions/ConfigSpec"
+        },
+        "params": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Param"
+          }
+        },
+        "highlight": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Expression"
+            },
+            {
+              "$ref": "#/definitions/ParamRef"
+            }
+          ]
+        },
+        "tooltip": {
+          "$ref": "#/definitions/Tooltip"
+        },
+        "mark": {
+          "type": "string",
+          "const": "diagram"
+        },
+        "process": {
+          "$ref": "#/definitions/Expression"
+        },
+        "fold": {
+          "type": "boolean"
+        },
+        "key": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "mark",
+        "process"
+      ],
+      "additionalProperties": false
+    },
+    "Width": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/Size"
+        },
+        {
+          "type": "string",
+          "const": "container"
+        }
+      ]
+    },
+    "Size": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "maximum": 1000000
+    },
+    "ConfigSpec": {
+      "type": "object",
+      "properties": {
+        "background": {
+          "$ref": "#/definitions/Color"
+        },
+        "ink": {
+          "$ref": "#/definitions/Color"
+        },
+        "muted": {
+          "$ref": "#/definitions/Color"
+        },
+        "faint": {
+          "$ref": "#/definitions/Color"
+        },
+        "line": {
+          "$ref": "#/definitions/Color"
+        },
+        "panel": {
+          "$ref": "#/definitions/Color"
+        },
+        "rail": {
+          "$ref": "#/definitions/Color"
+        },
+        "fail": {
+          "$ref": "#/definitions/Color"
+        },
+        "actors": {
+          "type": "object",
+          "properties": {
+            "model": {
+              "$ref": "#/definitions/Color"
+            },
+            "tool": {
+              "$ref": "#/definitions/Color"
+            },
+            "agent": {
+              "$ref": "#/definitions/Color"
+            },
+            "human": {
+              "$ref": "#/definitions/Color"
+            },
+            "code": {
+              "$ref": "#/definitions/Color"
+            },
+            "_": {
+              "$ref": "#/definitions/Color"
+            }
+          },
+          "additionalProperties": false
+        },
+        "diverging": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Color"
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "font": {
+          "type": "string"
+        },
+        "size": {
+          "$ref": "#/definitions/Size"
+        },
+        "advance": {
+          "$ref": "#/definitions/Size"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Color": {
+      "type": "string",
+      "pattern": "^#[0-9a-fA-F]{6}$"
+    },
+    "Param": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "$ref": "#/definitions/Name"
+        },
+        "select": {
+          "type": "string",
+          "enum": [
+            "click",
+            "hover"
+          ]
+        },
+        "value": {
+          "$ref": "#/definitions/Ids"
+        }
+      },
+      "required": [
+        "name",
+        "select"
+      ],
+      "additionalProperties": false
+    },
+    "Name": {
+      "type": "string",
+      "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
+    },
+    "Ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "Expression": {
+      "type": "string",
+      "description": "An expression in the vega-agent process grammar."
+    },
+    "ParamRef": {
+      "type": "object",
+      "properties": {
+        "param": {
+          "$ref": "#/definitions/Name"
+        }
+      },
+      "required": [
+        "param"
+      ],
+      "additionalProperties": false
+    },
+    "Tooltip": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/Field"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "field": {
+                    "$ref": "#/definitions/Field"
+                  },
+                  "title": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "field"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "Field": {
+      "type": "string",
+      "enum": [
+        "actor",
+        "count",
+        "difference",
+        "duration",
+        "end",
+        "ending",
+        "failed",
+        "from",
+        "longest",
+        "matching",
+        "median",
+        "rate",
+        "run",
+        "runs",
+        "share",
+        "spread",
+        "start",
+        "step",
+        "steps"
+      ]
+    },
+    "TimelineSpec": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/Data"
+        },
+        "transform": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Transform"
+          }
+        },
+        "trace": {
+          "$ref": "#/definitions/Mapping"
+        },
+        "$schema": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "width": {
+          "$ref": "#/definitions/Width"
+        },
+        "legend": {
+          "type": "boolean"
+        },
+        "config": {
+          "$ref": "#/definitions/ConfigSpec"
+        },
+        "params": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Param"
+          }
+        },
+        "highlight": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Expression"
+            },
+            {
+              "$ref": "#/definitions/ParamRef"
+            }
+          ]
+        },
+        "tooltip": {
+          "$ref": "#/definitions/Tooltip"
+        },
+        "mark": {
+          "type": "string",
+          "const": "timeline"
+        },
+        "filter": {
+          "$ref": "#/definitions/ParamRef"
+        },
+        "lanes": {
+          "type": "string",
+          "enum": [
+            "step",
+            "agent"
+          ]
+        }
+      },
+      "required": [
+        "mark"
+      ],
+      "additionalProperties": false
+    },
+    "Data": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/InlineData"
+        },
+        {
+          "$ref": "#/definitions/UrlData"
+        }
+      ]
+    },
+    "InlineData": {
+      "type": "object",
+      "properties": {
+        "values": {
+          "type": "array",
+          "items": {}
+        },
+        "format": {
+          "$ref": "#/definitions/Format"
+        }
+      },
+      "required": [
+        "values"
+      ],
+      "additionalProperties": false
+    },
+    "Format": {
+      "type": "string",
+      "enum": [
+        "runs",
+        "otel",
+        "openai_agents",
+        "langsmith",
+        "langfuse",
+        "messages",
+        "codex",
+        "claude_code",
+        "atif",
+        "swe_agent",
+        "openhands"
+      ]
+    },
+    "UrlData": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string"
+        },
+        "format": {
+          "$ref": "#/definitions/Format"
+        }
+      },
+      "required": [
+        "url"
+      ],
+      "additionalProperties": false
+    },
+    "Transform": {
+      "$ref": "#/definitions/FilterTransform"
+    },
+    "FilterTransform": {
+      "type": "object",
+      "properties": {
+        "filter": {
+          "$ref": "#/definitions/Predicate"
+        }
+      },
+      "required": [
+        "filter"
+      ],
+      "additionalProperties": false
+    },
+    "Predicate": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/EqualPredicate"
+        },
+        {
+          "$ref": "#/definitions/OneOfPredicate"
+        },
+        {
+          "$ref": "#/definitions/RangePredicate"
+        },
+        {
+          "$ref": "#/definitions/ValidPredicate"
+        },
+        {
+          "$ref": "#/definitions/AndPredicate"
+        },
+        {
+          "$ref": "#/definitions/OrPredicate"
+        },
+        {
+          "$ref": "#/definitions/NotPredicate"
+        }
+      ]
+    },
+    "EqualPredicate": {
+      "type": "object",
+      "properties": {
+        "field": {
+          "$ref": "#/definitions/FieldName"
+        },
+        "equal": {
+          "$ref": "#/definitions/Scalar"
+        }
+      },
+      "required": [
+        "field",
+        "equal"
+      ],
+      "additionalProperties": false
+    },
+    "FieldName": {
+      "type": "string",
+      "minLength": 1,
+      "description": "A field of the records, with dots reaching into nested objects."
+    },
+    "Scalar": {
+      "type": [
+        "string",
+        "number",
+        "boolean"
+      ]
+    },
+    "OneOfPredicate": {
+      "type": "object",
+      "properties": {
+        "field": {
+          "$ref": "#/definitions/FieldName"
+        },
+        "oneOf": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Scalar"
+          }
+        }
+      },
+      "required": [
+        "field",
+        "oneOf"
+      ],
+      "additionalProperties": false
+    },
+    "RangePredicate": {
+      "type": "object",
+      "properties": {
+        "field": {
+          "$ref": "#/definitions/FieldName"
+        },
+        "range": {
+          "type": "array",
+          "items": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "minItems": 2,
+          "maxItems": 2
+        }
+      },
+      "required": [
+        "field",
+        "range"
+      ],
+      "additionalProperties": false
+    },
+    "ValidPredicate": {
+      "type": "object",
+      "properties": {
+        "field": {
+          "$ref": "#/definitions/FieldName"
+        },
+        "valid": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "field",
+        "valid"
+      ],
+      "additionalProperties": false
+    },
+    "AndPredicate": {
+      "type": "object",
+      "properties": {
+        "and": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Predicate"
+          }
+        }
+      },
+      "required": [
+        "and"
+      ],
+      "additionalProperties": false
+    },
+    "OrPredicate": {
+      "type": "object",
+      "properties": {
+        "or": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Predicate"
+          }
+        }
+      },
+      "required": [
+        "or"
+      ],
+      "additionalProperties": false
+    },
+    "NotPredicate": {
+      "type": "object",
+      "properties": {
+        "not": {
+          "$ref": "#/definitions/Predicate"
+        }
+      },
+      "required": [
+        "not"
+      ],
+      "additionalProperties": false
+    },
+    "Mapping": {
+      "type": "object",
+      "properties": {
+        "group": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FieldName"
+            },
+            {
+              "$ref": "#/definitions/GroupChannel"
+            }
+          ]
+        },
+        "run": {
+          "$ref": "#/definitions/FieldName"
+        },
+        "step": {
+          "$ref": "#/definitions/FieldName"
+        },
+        "parent": {
+          "$ref": "#/definitions/FieldName"
+        },
+        "actor": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FieldName"
+            },
+            {
+              "$ref": "#/definitions/ActorChannel"
+            }
+          ]
+        },
+        "name": {
+          "$ref": "#/definitions/FieldName"
+        },
+        "failed": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FieldName"
+            },
+            {
+              "$ref": "#/definitions/FailedChannel"
+            }
+          ]
+        },
+        "start": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FieldName"
+            },
+            {
+              "$ref": "#/definitions/TimeChannel"
+            }
+          ]
+        },
+        "end": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FieldName"
+            },
+            {
+              "$ref": "#/definitions/TimeChannel"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "GroupChannel": {
+      "type": "object",
+      "properties": {
+        "field": {
+          "$ref": "#/definitions/FieldName"
+        },
+        "order": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "field",
+        "order"
+      ],
+      "additionalProperties": false
+    },
+    "ActorChannel": {
+      "type": "object",
+      "properties": {
+        "field": {
+          "$ref": "#/definitions/FieldName"
+        },
+        "map": {
+          "type": "object",
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/Expression"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      },
+      "required": [
+        "field"
+      ],
+      "additionalProperties": false
+    },
+    "FailedChannel": {
+      "type": "object",
+      "properties": {
+        "field": {
+          "$ref": "#/definitions/FieldName"
+        },
+        "equal": {
+          "type": [
+            "string",
+            "number",
+            "boolean"
+          ]
+        }
+      },
+      "required": [
+        "field",
+        "equal"
+      ],
+      "additionalProperties": false
+    },
+    "TimeChannel": {
+      "type": "object",
+      "properties": {
+        "field": {
+          "$ref": "#/definitions/FieldName"
+        },
+        "unit": {
+          "$ref": "#/definitions/TimeUnit"
+        }
+      },
+      "required": [
+        "field",
+        "unit"
+      ],
+      "additionalProperties": false
+    },
+    "TimeUnit": {
+      "type": "string",
+      "enum": [
+        "s",
+        "ms",
+        "us",
+        "ns"
+      ]
+    },
+    "HandoffsSpec": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/Data"
+        },
+        "transform": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Transform"
+          }
+        },
+        "trace": {
+          "$ref": "#/definitions/Mapping"
+        },
+        "$schema": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "width": {
+          "$ref": "#/definitions/Width"
+        },
+        "legend": {
+          "type": "boolean"
+        },
+        "config": {
+          "$ref": "#/definitions/ConfigSpec"
+        },
+        "params": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Param"
+          }
+        },
+        "highlight": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Expression"
+            },
+            {
+              "$ref": "#/definitions/ParamRef"
+            }
+          ]
+        },
+        "tooltip": {
+          "$ref": "#/definitions/Tooltip"
+        },
+        "mark": {
+          "type": "string",
+          "const": "handoffs"
+        },
+        "filter": {
+          "$ref": "#/definitions/ParamRef"
+        }
+      },
+      "required": [
+        "mark"
+      ],
+      "additionalProperties": false
+    },
+    "IcicleSpec": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/Data"
+        },
+        "transform": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Transform"
+          }
+        },
+        "trace": {
+          "$ref": "#/definitions/Mapping"
+        },
+        "$schema": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "width": {
+          "$ref": "#/definitions/Width"
+        },
+        "legend": {
+          "type": "boolean"
+        },
+        "config": {
+          "$ref": "#/definitions/ConfigSpec"
+        },
+        "params": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Param"
+          }
+        },
+        "highlight": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Expression"
+            },
+            {
+              "$ref": "#/definitions/ParamRef"
+            }
+          ]
+        },
+        "tooltip": {
+          "$ref": "#/definitions/Tooltip"
+        },
+        "filter": {
+          "$ref": "#/definitions/ParamRef"
+        },
+        "level": {
+          "$ref": "#/definitions/Level"
+        },
+        "mark": {
+          "type": "string",
+          "const": "icicle"
+        },
+        "focus": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "height": {
+          "$ref": "#/definitions/Size"
+        }
+      },
+      "required": [
+        "mark"
+      ],
+      "additionalProperties": false
+    },
+    "Level": {
+      "type": "string",
+      "enum": [
+        "full",
+        "names",
+        "actors",
+        "loops"
+      ]
+    },
+    "VariantsSpec": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/Data"
+        },
+        "transform": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Transform"
+          }
+        },
+        "trace": {
+          "$ref": "#/definitions/Mapping"
+        },
+        "$schema": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "width": {
+          "$ref": "#/definitions/Width"
+        },
+        "legend": {
+          "type": "boolean"
+        },
+        "config": {
+          "$ref": "#/definitions/ConfigSpec"
+        },
+        "params": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Param"
+          }
+        },
+        "highlight": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Expression"
+            },
+            {
+              "$ref": "#/definitions/ParamRef"
+            }
+          ]
+        },
+        "tooltip": {
+          "$ref": "#/definitions/Tooltip"
+        },
+        "filter": {
+          "$ref": "#/definitions/ParamRef"
+        },
+        "level": {
+          "$ref": "#/definitions/Level"
+        },
+        "mark": {
+          "type": "string",
+          "const": "variants"
+        },
+        "limit": {
+          "$ref": "#/definitions/Count"
+        }
+      },
+      "required": [
+        "mark"
+      ],
+      "additionalProperties": false
+    },
+    "Count": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "TransitionsSpec": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/Data"
+        },
+        "transform": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Transform"
+          }
+        },
+        "trace": {
+          "$ref": "#/definitions/Mapping"
+        },
+        "$schema": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "width": {
+          "$ref": "#/definitions/Width"
+        },
+        "legend": {
+          "type": "boolean"
+        },
+        "config": {
+          "$ref": "#/definitions/ConfigSpec"
+        },
+        "params": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Param"
+          }
+        },
+        "highlight": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Expression"
+            },
+            {
+              "$ref": "#/definitions/ParamRef"
+            }
+          ]
+        },
+        "tooltip": {
+          "$ref": "#/definitions/Tooltip"
+        },
+        "filter": {
+          "$ref": "#/definitions/ParamRef"
+        },
+        "level": {
+          "$ref": "#/definitions/Level"
+        },
+        "mark": {
+          "type": "string",
+          "const": "transitions"
+        },
+        "limit": {
+          "$ref": "#/definitions/Count"
+        }
+      },
+      "required": [
+        "mark"
+      ],
+      "additionalProperties": false
+    },
+    "GraphSpec": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/Data"
+        },
+        "transform": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Transform"
+          }
+        },
+        "trace": {
+          "$ref": "#/definitions/Mapping"
+        },
+        "$schema": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "width": {
+          "$ref": "#/definitions/Width"
+        },
+        "legend": {
+          "type": "boolean"
+        },
+        "config": {
+          "$ref": "#/definitions/ConfigSpec"
+        },
+        "params": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Param"
+          }
+        },
+        "highlight": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Expression"
+            },
+            {
+              "$ref": "#/definitions/ParamRef"
+            }
+          ]
+        },
+        "tooltip": {
+          "$ref": "#/definitions/Tooltip"
+        },
+        "filter": {
+          "$ref": "#/definitions/ParamRef"
+        },
+        "level": {
+          "$ref": "#/definitions/Level"
+        },
+        "mark": {
+          "type": "string",
+          "const": "graph"
+        },
+        "limit": {
+          "$ref": "#/definitions/Count"
+        }
+      },
+      "required": [
+        "mark"
+      ],
+      "additionalProperties": false
+    },
+    "SankeySpec": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/Data"
+        },
+        "transform": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Transform"
+          }
+        },
+        "trace": {
+          "$ref": "#/definitions/Mapping"
+        },
+        "$schema": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "width": {
+          "$ref": "#/definitions/Width"
+        },
+        "legend": {
+          "type": "boolean"
+        },
+        "config": {
+          "$ref": "#/definitions/ConfigSpec"
+        },
+        "params": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Param"
+          }
+        },
+        "highlight": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Expression"
+            },
+            {
+              "$ref": "#/definitions/ParamRef"
+            }
+          ]
+        },
+        "tooltip": {
+          "$ref": "#/definitions/Tooltip"
+        },
+        "filter": {
+          "$ref": "#/definitions/ParamRef"
+        },
+        "level": {
+          "$ref": "#/definitions/Level"
+        },
+        "mark": {
+          "type": "string",
+          "const": "sankey"
+        },
+        "limit": {
+          "$ref": "#/definitions/Count"
+        },
+        "height": {
+          "$ref": "#/definitions/Size"
+        }
+      },
+      "required": [
+        "mark"
+      ],
+      "additionalProperties": false
+    },
+    "ActivitiesSpec": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/Data"
+        },
+        "transform": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Transform"
+          }
+        },
+        "trace": {
+          "$ref": "#/definitions/Mapping"
+        },
+        "$schema": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "width": {
+          "$ref": "#/definitions/Width"
+        },
+        "legend": {
+          "type": "boolean"
+        },
+        "config": {
+          "$ref": "#/definitions/ConfigSpec"
+        },
+        "params": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Param"
+          }
+        },
+        "highlight": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Expression"
+            },
+            {
+              "$ref": "#/definitions/ParamRef"
+            }
+          ]
+        },
+        "tooltip": {
+          "$ref": "#/definitions/Tooltip"
+        },
+        "filter": {
+          "$ref": "#/definitions/ParamRef"
+        },
+        "level": {
+          "$ref": "#/definitions/Level"
+        },
+        "mark": {
+          "type": "string",
+          "const": "activities"
+        },
+        "limit": {
+          "$ref": "#/definitions/Count"
+        }
+      },
+      "required": [
+        "mark"
+      ],
+      "additionalProperties": false
+    },
+    "SequencesSpec": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/Data"
+        },
+        "transform": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Transform"
+          }
+        },
+        "trace": {
+          "$ref": "#/definitions/Mapping"
+        },
+        "$schema": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "width": {
+          "$ref": "#/definitions/Width"
+        },
+        "legend": {
+          "type": "boolean"
+        },
+        "config": {
+          "$ref": "#/definitions/ConfigSpec"
+        },
+        "params": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Param"
+          }
+        },
+        "highlight": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Expression"
+            },
+            {
+              "$ref": "#/definitions/ParamRef"
+            }
+          ]
+        },
+        "tooltip": {
+          "$ref": "#/definitions/Tooltip"
+        },
+        "filter": {
+          "$ref": "#/definitions/ParamRef"
+        },
+        "mark": {
+          "type": "string",
+          "const": "sequences"
+        },
+        "limit": {
+          "$ref": "#/definitions/Count"
+        },
+        "x": {
+          "type": "string",
+          "enum": [
+            "step",
+            "time"
+          ]
+        }
+      },
+      "required": [
+        "mark"
+      ],
+      "additionalProperties": false
+    },
+    "DistributionSpec": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/Data"
+        },
+        "transform": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Transform"
+          }
+        },
+        "trace": {
+          "$ref": "#/definitions/Mapping"
+        },
+        "$schema": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "width": {
+          "$ref": "#/definitions/Width"
+        },
+        "legend": {
+          "type": "boolean"
+        },
+        "config": {
+          "$ref": "#/definitions/ConfigSpec"
+        },
+        "params": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Param"
+          }
+        },
+        "highlight": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Expression"
+            },
+            {
+              "$ref": "#/definitions/ParamRef"
+            }
+          ]
+        },
+        "tooltip": {
+          "$ref": "#/definitions/Tooltip"
+        },
+        "filter": {
+          "$ref": "#/definitions/ParamRef"
+        },
+        "mark": {
+          "type": "string",
+          "const": "distribution"
+        },
+        "measure": {
+          "$ref": "#/definitions/Measure"
+        }
+      },
+      "required": [
+        "mark"
+      ],
+      "additionalProperties": false
+    },
+    "Measure": {
+      "type": "string",
+      "enum": [
+        "steps",
+        "failures",
+        "duration"
+      ]
+    },
+    "DurationsSpec": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/Data"
+        },
+        "transform": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Transform"
+          }
+        },
+        "trace": {
+          "$ref": "#/definitions/Mapping"
+        },
+        "$schema": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "width": {
+          "$ref": "#/definitions/Width"
+        },
+        "legend": {
+          "type": "boolean"
+        },
+        "config": {
+          "$ref": "#/definitions/ConfigSpec"
+        },
+        "params": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Param"
+          }
+        },
+        "highlight": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Expression"
+            },
+            {
+              "$ref": "#/definitions/ParamRef"
+            }
+          ]
+        },
+        "tooltip": {
+          "$ref": "#/definitions/Tooltip"
+        },
+        "filter": {
+          "$ref": "#/definitions/ParamRef"
+        },
+        "level": {
+          "$ref": "#/definitions/Level"
+        },
+        "mark": {
+          "type": "string",
+          "const": "durations"
+        },
+        "limit": {
+          "$ref": "#/definitions/Count"
+        }
+      },
+      "required": [
+        "mark"
+      ],
+      "additionalProperties": false
+    },
+    "ProjectionSpec": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/Data"
+        },
+        "transform": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Transform"
+          }
+        },
+        "trace": {
+          "$ref": "#/definitions/Mapping"
+        },
+        "$schema": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "width": {
+          "$ref": "#/definitions/Width"
+        },
+        "legend": {
+          "type": "boolean"
+        },
+        "config": {
+          "$ref": "#/definitions/ConfigSpec"
+        },
+        "params": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Param"
+          }
+        },
+        "highlight": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Expression"
+            },
+            {
+              "$ref": "#/definitions/ParamRef"
+            }
+          ]
+        },
+        "tooltip": {
+          "$ref": "#/definitions/Tooltip"
+        },
+        "filter": {
+          "$ref": "#/definitions/ParamRef"
+        },
+        "level": {
+          "$ref": "#/definitions/Level"
+        },
+        "mark": {
+          "type": "string",
+          "const": "projection"
+        },
+        "height": {
+          "$ref": "#/definitions/Size"
+        }
+      },
+      "required": [
+        "mark"
+      ],
+      "additionalProperties": false
+    },
+    "VConcatSpec": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/Data"
+        },
+        "transform": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Transform"
+          }
+        },
+        "trace": {
+          "$ref": "#/definitions/Mapping"
+        },
+        "$schema": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "width": {
+          "$ref": "#/definitions/Width"
+        },
+        "legend": {
+          "type": "boolean"
+        },
+        "config": {
+          "$ref": "#/definitions/ConfigSpec"
+        },
+        "vconcat": {
+          "$ref": "#/definitions/Views"
+        }
+      },
+      "required": [
+        "vconcat"
+      ],
+      "additionalProperties": false
+    },
+    "Views": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/UnitSpec"
+      },
+      "minItems": 1
+    },
+    "HConcatSpec": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/Data"
+        },
+        "transform": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Transform"
+          }
+        },
+        "trace": {
+          "$ref": "#/definitions/Mapping"
+        },
+        "$schema": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "width": {
+          "$ref": "#/definitions/Width"
+        },
+        "legend": {
+          "type": "boolean"
+        },
+        "config": {
+          "$ref": "#/definitions/ConfigSpec"
+        },
+        "hconcat": {
+          "$ref": "#/definitions/Views"
+        }
+      },
+      "required": [
+        "hconcat"
+      ],
+      "additionalProperties": false
+    },
+    "FacetSpec": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/Data"
+        },
+        "transform": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Transform"
+          }
+        },
+        "trace": {
+          "$ref": "#/definitions/Mapping"
+        },
+        "$schema": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "width": {
+          "$ref": "#/definitions/Width"
+        },
+        "legend": {
+          "type": "boolean"
+        },
+        "config": {
+          "$ref": "#/definitions/ConfigSpec"
+        },
+        "facet": {
+          "$ref": "#/definitions/Facet"
+        },
+        "spec": {
+          "$ref": "#/definitions/Panel"
+        }
+      },
+      "required": [
+        "facet",
+        "spec"
+      ],
+      "additionalProperties": false
+    },
+    "Facet": {
+      "type": "object",
+      "properties": {
+        "field": {
+          "$ref": "#/definitions/FieldName"
+        },
+        "columns": {
+          "$ref": "#/definitions/Count"
+        }
+      },
+      "required": [
+        "field"
+      ],
+      "additionalProperties": false
+    },
+    "Panel": {
+      "type": "object",
+      "properties": {
+        "mark": {
+          "type": "string",
+          "enum": [
+            "timeline",
+            "handoffs",
+            "icicle",
+            "variants",
+            "transitions",
+            "graph",
+            "sankey",
+            "activities",
+            "sequences",
+            "distribution",
+            "durations",
+            "projection"
+          ]
+        },
+        "filter": {
+          "$ref": "#/definitions/ParamRef"
+        },
+        "lanes": {
+          "type": "string",
+          "enum": [
+            "step",
+            "agent"
+          ]
+        },
+        "params": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Param"
+          }
+        },
+        "highlight": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Expression"
+            },
+            {
+              "$ref": "#/definitions/ParamRef"
+            }
+          ]
+        },
+        "tooltip": {
+          "$ref": "#/definitions/Tooltip"
+        },
+        "$schema": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "width": {
+          "$ref": "#/definitions/Width"
+        },
+        "legend": {
+          "type": "boolean"
+        },
+        "config": {
+          "$ref": "#/definitions/ConfigSpec"
+        },
+        "focus": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "height": {
+          "$ref": "#/definitions/Size"
+        },
+        "level": {
+          "$ref": "#/definitions/Level"
+        },
+        "limit": {
+          "$ref": "#/definitions/Count"
+        },
+        "x": {
+          "type": "string",
+          "enum": [
+            "step",
+            "time"
+          ]
+        },
+        "measure": {
+          "$ref": "#/definitions/Measure"
+        }
+      },
+      "required": [
+        "mark"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

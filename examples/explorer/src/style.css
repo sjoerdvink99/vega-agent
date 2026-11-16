@@ -1,0 +1,133 @@
+:root {
+  --ink: #1c2027;
+  --muted: #6a7280;
+  --line: #e4e7ec;
+  --panel: #ffffff;
+  --page: #f6f7f9;
+  --fail: #e5484d;
+  font:
+    14px/1.45 system-ui,
+    sans-serif;
+  color: var(--ink);
+  background: var(--page);
+}
+
+body {
+  margin: 0;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 24px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--line);
+}
+
+h1 {
+  margin: 0;
+  font-size: 16px;
+}
+
+h2 {
+  margin: 0 0 10px;
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+#summary {
+  flex: 1;
+  margin: 0;
+  color: var(--muted);
+}
+
+.button {
+  padding: 6px 12px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--panel);
+  cursor: pointer;
+}
+
+.button:hover {
+  border-color: var(--muted);
+}
+
+main {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  gap: 16px;
+  padding: 16px 24px;
+}
+
+.panel {
+  min-width: 0;
+  padding: 16px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+
+.flows {
+  grid-column: 1 / -1;
+}
+
+#query {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 7px 10px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font:
+    12px ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+}
+
+.problem {
+  min-height: 1em;
+  margin: 6px 0;
+  color: var(--fail);
+  font:
+    11px ui-monospace,
+    monospace;
+  white-space: pre-wrap;
+}
+
+#runs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+#runs button {
+  padding: 3px 8px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  background: var(--panel);
+  font:
+    11px ui-monospace,
+    monospace;
+  cursor: pointer;
+}
+
+#runs button[aria-pressed="true"] {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--panel);
+}
+
+.hint {
+  margin: 0;
+  color: var(--muted);
+}
+
+@media (max-width: 900px) {
+  main {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
